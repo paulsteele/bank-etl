@@ -1,3 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-Console.WriteLine("Hello, World!");
+using Autofac;
+using core;
+using core.Database;
+
+DependencyContainer.Instance.Resolve<IDb>().Init();
