@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "firefly-iii-auto-connector", "firefly-iii-auto-connector.csproj", "{46B0FCE9-0B4D-4E1F-8473-E6D9932741A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core", "core/core.csproj", "{46B0FCE9-0B4D-4E1F-8473-E6D9932741A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
