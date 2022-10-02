@@ -19,7 +19,11 @@ public static class DependencyContainer
 		builder.RegisterType<Db>().As<IDb>().SingleInstance();
 		builder.RegisterType<EnvironmentVariableConfiguration>().As<IEnvironmentVariableConfiguration>();
 		
-		builder.RegisterInstance(new LoggerFactory())
+		builder.RegisterInstance(LoggerFactory.Create(
+				logBuilder =>
+				{
+					logBuilder.AddConsole();
+				}))
 			.As<ILoggerFactory>();
 
 		builder.RegisterGeneric(typeof(Logger<>)).As(typeof(ILogger<>));
