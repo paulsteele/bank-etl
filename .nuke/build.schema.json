@@ -43,6 +43,10 @@
             "VSCode"
           ]
         },
+        "MigrationName": {
+          "type": "string",
+          "description": "Name of database migration"
+        },
         "NoLogo": {
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"
@@ -72,9 +76,16 @@
           "items": {
             "type": "string",
             "enum": [
+              "AddMigration",
               "Clean",
               "Compile",
-              "Restore"
+              "CreateDevContainers",
+              "ListMigrations",
+              "RemoveDevContainers",
+              "Restore",
+              "Run",
+              "StartDevContainers",
+              "StopDevContainers"
             ]
           }
         },
@@ -88,9 +99,16 @@
           "items": {
             "type": "string",
             "enum": [
+              "AddMigration",
               "Clean",
               "Compile",
-              "Restore"
+              "CreateDevContainers",
+              "ListMigrations",
+              "RemoveDevContainers",
+              "Restore",
+              "Run",
+              "StartDevContainers",
+              "StopDevContainers"
             ]
           }
         },
