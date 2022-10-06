@@ -7,6 +7,8 @@ namespace core.Configuration {
 		string DatabaseUser { get; }
 		string DatabasePassword { get; }
 		string DatabaseName { get; }
+		string AwsAccessKey { get; }
+		string AwsSecretAccessKey { get; }
 	}
 
 	public class EnvironmentVariableConfiguration : IEnvironmentVariableConfiguration {
@@ -18,6 +20,8 @@ namespace core.Configuration {
 			DatabaseUser = GetVar(nameof(DatabaseUser), "root", ConvertString);
 			DatabasePassword = GetVar(nameof(DatabasePassword), "pass", ConvertString);
 			DatabaseName = GetVar(nameof(DatabaseName), "hub", ConvertString);
+			AwsAccessKey = GetVar(nameof(AwsAccessKey), "access", ConvertString);
+			AwsSecretAccessKey = GetVar(nameof(AwsSecretAccessKey), "secret", ConvertString);
 		}
 
 		private static T GetVar<T>(string name, T defaultValue, Func<string, T> converter) {
@@ -38,5 +42,7 @@ namespace core.Configuration {
 		public string DatabaseUser { get; }
 		public string DatabasePassword { get; }
 		public string DatabaseName { get; }
+		public string AwsAccessKey { get; }
+		public string AwsSecretAccessKey { get; }
 	}
 }
