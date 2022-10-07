@@ -4,4 +4,5 @@ using Autofac;
 using core;
 using core.Database;
 
+EtlDependencyContainerBuilder.RegisterContainer();
 DependencyContainer.Instance.Resolve<IDb>().Init();

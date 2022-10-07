@@ -19,7 +19,7 @@ class Build : NukeBuild
 	readonly Tool Podman;
 
 	[Solution] readonly Solution Solution;
-	string RootProjectName = "core";
+	string RootProjectName = "etl";
 
 	Target Clean => _ => _
 		.Before(Restore).Executes(() =>
@@ -54,7 +54,7 @@ class Build : NukeBuild
 	Target Run => _ => _
 		.Executes(() =>
 			{
-				RootProjectName = "core";
+				RootProjectName = "etl";
 				DotNetRun(s => s
 					.SetProjectFile(Solution.GetProject(RootProjectName))
 					.SetConfiguration(Configuration)

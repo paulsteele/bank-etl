@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core", "core/core.csproj", "{46B0FCE9-0B4D-4E1F-8473-E6D9932741A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "etl", "etl\etl.csproj", "{46B0FCE9-0B4D-4E1F-8473-E6D9932741A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{91E9ACC5-0188-48C1-9A8A-F0A06642CC6F}"
 EndProject
@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "chase", "middleware\chase\c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discord", "middleware\discord\discord.csproj", "{F0C4B387-09E8-4EF6-A71C-486AEC25FA25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "models", "models\models.csproj", "{9537F20A-4FBA-47A1-A53E-F5910EA506EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core", "core\core.csproj", "{9537F20A-4FBA-47A1-A53E-F5910EA506EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

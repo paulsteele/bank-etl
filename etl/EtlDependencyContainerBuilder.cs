@@ -1,20 +1,26 @@
 using Autofac;
 using core.Configuration;
 using core.Database;
+using core.Dependencies;
 using Microsoft.Extensions.Logging;
+using sqs;
 
 namespace core;
 
-public static class DependencyContainer
+public class EtlDependencyContainerBuilder : IDependencyContainerBuilder
 {
-	private static IContainer? _instance;
-
-	public static IContainer Instance => _instance ??= Register();
-
-	private static IContainer Register()
+	public static void RegisterContainer()
 	{
 		var builder = new ContainerBuilder();
+		
+		new EtlDependencyContainerBuilder().RegisterDependencies(builder);
+		new SqsDependencyBuilder().RegisterDependencies(builder);
 
+		DependencyContainer.Instance =  builder.Build();
+	}
+
+	public void RegisterDependencies(ContainerBuilder builder)
+	{
 		builder.RegisterType<DatabaseContext>().As<DatabaseContext>().SingleInstance();
 		builder.RegisterType<Db>().As<IDb>().SingleInstance();
 		builder.RegisterType<EnvironmentVariableConfiguration>().As<IEnvironmentVariableConfiguration>();
@@ -27,7 +33,5 @@ public static class DependencyContainer
 			.As<ILoggerFactory>();
 
 		builder.RegisterGeneric(typeof(Logger<>)).As(typeof(ILogger<>));
-
-		return builder.Build();
 	}
 }

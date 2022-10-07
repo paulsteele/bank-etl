@@ -1,7 +1,7 @@
 using core.Configuration;
+using core.models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using models;
 
 namespace core.Database;
 
@@ -9,7 +9,7 @@ public class DatabaseContext : DbContext
 {
 	private readonly IEnvironmentVariableConfiguration _configuration;
 	
-	public DbSet<EtlItem> Items { get; set; }
+	public DbSet<BankItem> Items { get; set; }
 
 	public DatabaseContext(IEnvironmentVariableConfiguration configuration)
 	{

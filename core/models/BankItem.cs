@@ -1,6 +1,6 @@
-﻿namespace models;
+﻿namespace core.models;
 
-public class EtlItem
+public class BankItem
 {
 	// Processing Details
 	public Guid Id { get; set; }
