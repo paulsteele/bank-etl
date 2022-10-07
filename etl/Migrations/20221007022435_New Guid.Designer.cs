@@ -11,8 +11,8 @@ using core.Database;
 namespace core.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221007012841_Add EtlItem")]
-    partial class AddEtlItem
+    [Migration("20221007022435_New Guid")]
+    partial class NewGuid
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,11 +21,12 @@ namespace core.Migrations
                 .HasAnnotation("ProductVersion", "6.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("core.EtlItem", b =>
+            modelBuilder.Entity("core.models.BankItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("char(36)")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(65,30)");

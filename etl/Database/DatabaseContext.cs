@@ -22,6 +22,14 @@ public class DatabaseContext : DbContext
 		var serverVersion = ServerVersion.AutoDetect(connectionString);
 		optionsBuilder.UseMySql(connectionString, serverVersion).EnableDetailedErrors();
 	}
+	
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
+	{
+		modelBuilder.Entity<BankItem>()
+			.Property(b => b.Id)
+			.HasDefaultValueSql("NEWID()")
+			.IsRequired();
+	}
 
 	public class MigrationContextFactory : IDesignTimeDbContextFactory<DatabaseContext>
 	{

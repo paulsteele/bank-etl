@@ -1,8 +1,13 @@
-﻿namespace core.models;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace core.models;
 
 public class BankItem
 {
 	// Processing Details
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	[Key]
 	public Guid Id { get; set; }
 	public string State { get; set; }
 	// sqs Details
