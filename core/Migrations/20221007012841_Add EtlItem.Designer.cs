@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using core.Database;
 
@@ -10,9 +11,10 @@ using core.Database;
 namespace core.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20221007012841_Add EtlItem")]
+    partial class AddEtlItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

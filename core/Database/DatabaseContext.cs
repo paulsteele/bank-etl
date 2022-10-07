@@ -1,12 +1,15 @@
 using core.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using models;
 
 namespace core.Database;
 
 public class DatabaseContext : DbContext
 {
 	private readonly IEnvironmentVariableConfiguration _configuration;
+	
+	public DbSet<EtlItem> Items { get; set; }
 
 	public DatabaseContext(IEnvironmentVariableConfiguration configuration)
 	{
