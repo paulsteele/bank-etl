@@ -1,6 +1,7 @@
 using Autofac;
 using core.Configuration;
 using core.Database;
+using core.Db;
 using core.Dependencies;
 using Microsoft.Extensions.Logging;
 using sqs;
@@ -22,7 +23,7 @@ public class EtlDependencyContainerBuilder : IDependencyContainerBuilder
 	public void RegisterDependencies(ContainerBuilder builder)
 	{
 		builder.RegisterType<DatabaseContext>().As<DatabaseContext>().SingleInstance();
-		builder.RegisterType<Db>().As<IDb>().SingleInstance();
+		builder.RegisterType<Database.Db>().As<IDb>().SingleInstance();
 		builder.RegisterType<EnvironmentVariableConfiguration>().As<IEnvironmentVariableConfiguration>();
 		
 		builder.RegisterInstance(LoggerFactory.Create(

@@ -7,6 +7,6 @@ public class SqsDependencyBuilder : IDependencyContainerBuilder
 {
 	public void RegisterDependencies(ContainerBuilder builder)
 	{
-		builder.RegisterType<EmailQueue>().SingleInstance();
+		builder.RegisterType<EmailQueue>().As<ISource>().SingleInstance();
 	}
 }

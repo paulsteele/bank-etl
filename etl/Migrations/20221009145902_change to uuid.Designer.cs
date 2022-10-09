@@ -11,8 +11,8 @@ using core.Database;
 namespace core.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221007022435_New Guid")]
-    partial class NewGuid
+    [Migration("20221009145902_change to uuid")]
+    partial class changetouuid
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

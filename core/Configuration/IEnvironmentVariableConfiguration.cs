@@ -8,4 +8,5 @@ public interface IEnvironmentVariableConfiguration {
 	string DatabaseName { get; }
 	string AwsAccessKey { get; }
 	string AwsSecretAccessKey { get; }
+	string SqsQueueUrl { get; }
 }

@@ -10,6 +10,7 @@ namespace core.Configuration {
 			DatabaseName = GetVar(nameof(DatabaseName), "hub", ConvertString);
 			AwsAccessKey = GetVar(nameof(AwsAccessKey), "access", ConvertString);
 			AwsSecretAccessKey = GetVar(nameof(AwsSecretAccessKey), "secret", ConvertString);
+			SqsQueueUrl = GetVar(nameof(SqsQueueUrl), "example", ConvertString);
 		}
 
 		private static T GetVar<T>(string name, T defaultValue, Func<string, T> converter) {
@@ -32,5 +33,6 @@ namespace core.Configuration {
 		public string DatabaseName { get; }
 		public string AwsAccessKey { get; }
 		public string AwsSecretAccessKey { get; }
+		public string SqsQueueUrl { get; }
 	}
 }
