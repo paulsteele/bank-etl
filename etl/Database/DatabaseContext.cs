@@ -27,7 +27,8 @@ public class DatabaseContext : DbContext
 	{
 		modelBuilder.Entity<BankItem>()
 			.Property(b => b.Id)
-			.HasDefaultValueSql("NEWID()")
+			.ValueGeneratedOnAdd()
+			.HasDefaultValueSql("(uuid())")
 			.IsRequired();
 	}
 

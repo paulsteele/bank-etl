@@ -24,7 +24,7 @@ namespace core.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
-                        .HasDefaultValueSql("NEWID()");
+                        .HasDefaultValueSql("(uuid())");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(65,30)");

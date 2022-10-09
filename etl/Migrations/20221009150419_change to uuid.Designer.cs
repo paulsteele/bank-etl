@@ -11,7 +11,7 @@ using core.Database;
 namespace core.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221009145902_change to uuid")]
+    [Migration("20221009150419_change to uuid")]
     partial class changetouuid
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,7 +26,7 @@ namespace core.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
-                        .HasDefaultValueSql("NEWID()");
+                        .HasDefaultValueSql("(uuid())");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(65,30)");
