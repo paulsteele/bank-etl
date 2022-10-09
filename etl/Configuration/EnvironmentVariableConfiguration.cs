@@ -14,7 +14,7 @@ namespace core.Configuration {
 		}
 
 		private static T GetVar<T>(string name, T defaultValue, Func<string, T> converter) {
-			var envVar = Environment.GetEnvironmentVariable(name);
+			var envVar = Environment.GetEnvironmentVariable(name) ?? Environment.GetEnvironmentVariable(name.ToUpper());
 			return envVar != null ? converter(envVar) : defaultValue;
 		}
 

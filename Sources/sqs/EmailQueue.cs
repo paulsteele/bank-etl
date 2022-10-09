@@ -1,7 +1,9 @@
 ﻿using System.Net;
+using Amazon;
 using Amazon.Runtime;
 using Amazon.SQS;
 using Amazon.SQS.Model;
+using core;
 using core.Configuration;
 using core.Db;
 using core.models;
@@ -28,44 +30,64 @@ internal class EmailQueue : ISource
 		_logger = logger;
 	}
 
-	private AmazonSQSClient CreateClient()
+	private AmazonSQSClient? CreateClient()
 	{
-		return new AmazonSQSClient(_environmentVariableConfiguration.AwsAccessKey, _environmentVariableConfiguration.AwsSecretAccessKey);
+		return new AmazonSQSClient(
+			_environmentVariableConfiguration.AwsAccessKey,
+			_environmentVariableConfiguration.AwsSecretAccessKey,
+			new AmazonSQSConfig {RegionEndpoint = RegionEndpoint.USEast1}
+		);
 	}
 
 	public void StartListening()
 	{
-		var client = CreateClient();
+		AmazonSQSClient? client = null;
+		ErrorCatching.ExecuteWithErrorCatching(_logger, () =>
+		{
+			client = CreateClient();
+		});
 
-		var timer = new Timer(30000);
+		if (client == null)
+		{
+			return;
+		}
+
+		var timer = new Timer(10000);
 		timer.Elapsed += async (sender, args) =>
 		{
-			var response = await client.ReceiveMessageAsync(new ReceiveMessageRequest(_environmentVariableConfiguration.SqsQueueUrl){WaitTimeSeconds = 10});
-			if (!AssertSuccess(response))
-			{
-				return;
-			}
-			_logger.LogInformation($"Found {response.Messages.Count} messages");
-			// ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
-			foreach (var message in response.Messages)
-			{
-				var item = new BankItem
+			await ErrorCatching.ExecuteWithErrorCatching(
+				_logger, async () =>
 				{
-					RawPayload = message.Body,
-					State = ReceivedFromSqs
-				};
-				
-				_logger.LogInformation($"Saved {message.MessageId}");
-				_database.UpsertBankItem(item);
-				_database.SaveChanges();
+					var response = await client.ReceiveMessageAsync(new ReceiveMessageRequest(_environmentVariableConfiguration.SqsQueueUrl) {WaitTimeSeconds = 10});
+					if (!AssertSuccess(response))
+					{
+						return;
+					}
 
-				var deleteResponse = await client.DeleteMessageAsync(new DeleteMessageRequest(_environmentVariableConfiguration.SqsQueueUrl, message.ReceiptHandle));
-				if (AssertSuccess(deleteResponse))
-				{
-					_logger.LogInformation($"Removed {message.MessageId} from the queue");
+					_logger.LogInformation($"Found {response.Messages.Count} messages");
+					// ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+					foreach (var message in response.Messages)
+					{
+						var item = new BankItem
+						{
+							RawPayload = message.Body,
+							State = ReceivedFromSqs
+						};
+
+						_database.UpsertBankItem(item);
+						_database.SaveChanges();
+						_logger.LogInformation($"Saved {message.MessageId}");
+
+						var deleteResponse = await client.DeleteMessageAsync(new DeleteMessageRequest(_environmentVariableConfiguration.SqsQueueUrl, message.ReceiptHandle));
+						if (AssertSuccess(deleteResponse))
+						{
+							_logger.LogInformation($"Removed {message.MessageId} from the queue");
+						}
+					}
 				}
-			}
+			);
 		};
+		timer.Start();
 	}
 
 	private bool AssertSuccess(AmazonWebServiceResponse response)
