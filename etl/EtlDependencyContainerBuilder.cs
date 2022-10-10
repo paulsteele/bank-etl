@@ -22,7 +22,7 @@ public class EtlDependencyContainerBuilder : IDependencyContainerBuilder
 
 	public void RegisterDependencies(ContainerBuilder builder)
 	{
-		builder.RegisterType<DatabaseContext>().As<DatabaseContext>().SingleInstance();
+		builder.RegisterType<DatabaseContext>().As<DatabaseContext>();
 		builder.RegisterType<Database.Db>().As<IDb>().SingleInstance();
 		builder.RegisterType<EnvironmentVariableConfiguration>().As<IEnvironmentVariableConfiguration>();
 		

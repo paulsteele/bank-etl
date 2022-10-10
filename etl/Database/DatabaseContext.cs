@@ -21,6 +21,8 @@ public class DatabaseContext : DbContext
 		var connectionString = $"Server={_configuration.DatabaseUrl};Port={_configuration.DatabasePort};Database={_configuration.DatabaseName};Uid={_configuration.DatabaseUser};Pwd={_configuration.DatabasePassword};";
 		var serverVersion = ServerVersion.AutoDetect(connectionString);
 		optionsBuilder.UseMySql(connectionString, serverVersion).EnableDetailedErrors();
+		optionsBuilder.EnableDetailedErrors();
+		optionsBuilder.EnableSensitiveDataLogging();
 	}
 	
 	protected override void OnModelCreating(ModelBuilder modelBuilder)

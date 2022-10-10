@@ -1,3 +1,4 @@
+using Autofac;
 using core.Db;
 using core.models;
 using Microsoft.EntityFrameworkCore;
@@ -6,29 +7,54 @@ using Microsoft.Extensions.Logging;
 namespace core.Database {
 	public class Db : IDb {
 		private readonly ILogger<Db> _logger;
-		private readonly DatabaseContext _databaseContext;
+		private readonly ILifetimeScope _lifetimeScope;
+		private ILifetimeScope _databaseScope;
+		private DatabaseContext? _databaseContext;
 
-		public Db(ILogger<Db> logger, DatabaseContext databaseContext)
+		public Db(ILogger<Db> logger, ILifetimeScope lifetimeScope)
 		{
 			_logger = logger;
-			_databaseContext = databaseContext;
+			_lifetimeScope = lifetimeScope;
 		}
 
 		public void Init() {
 			_logger.LogInformation("Initializing Database");
-			_databaseContext.Database.Migrate();
+			Context.Database.Migrate();
+
+			_databaseContext = null;
+			_databaseScope.Dispose();
 		}
 
-		public BankItem UpsertBankItem(BankItem item)
+		public BankItem? AddItem(BankItem item)
 		{
-			return item.Id == Guid.Empty ? 
-				_databaseContext.Items.Add(item).Entity : 
-				_databaseContext.Items.Update(item).Entity;
+			if (item.Id != null)
+			{
+				_logger.LogError($"{nameof(AddItem)} can only be called on a new {nameof(BankItem)}");
+			}
+
+			return Context.Items.Add(item).Entity;
+		}
+
+		private DatabaseContext Context
+		{
+			get
+			{
+				// ReSharper disable once InvertIf
+				if (_databaseContext == null)
+				{
+					_databaseScope = _lifetimeScope.BeginLifetimeScope();
+					_databaseContext = _databaseScope.Resolve<DatabaseContext>();
+				}
+
+				return _databaseContext;
+			}
 		}
 
 		public void SaveChanges()
 		{
-			_databaseContext.SaveChanges();
+			Context.SaveChanges();
+			_databaseContext = null;
+			_databaseScope.Dispose();
 		}
 	}
 }

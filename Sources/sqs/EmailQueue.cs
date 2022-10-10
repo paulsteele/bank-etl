@@ -74,9 +74,9 @@ internal class EmailQueue : ISource
 							State = ReceivedFromSqs
 						};
 
-						_database.UpsertBankItem(item);
+						_database.AddItem(item);
 						_database.SaveChanges();
-						_logger.LogInformation($"Saved {message.MessageId}");
+						_logger.LogInformation($"Added {message.MessageId}");
 
 						var deleteResponse = await client.DeleteMessageAsync(new DeleteMessageRequest(_environmentVariableConfiguration.SqsQueueUrl, message.ReceiptHandle));
 						if (AssertSuccess(deleteResponse))

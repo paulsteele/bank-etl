@@ -4,6 +4,6 @@ namespace core.Db;
 
 public interface IDb {
 	void Init();
-	BankItem UpsertBankItem(BankItem item);
+	BankItem? AddItem(BankItem item);
 	void SaveChanges();
 }
