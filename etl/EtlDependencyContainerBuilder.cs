@@ -22,9 +22,10 @@ public class EtlDependencyContainerBuilder : IDependencyContainerBuilder
 
 	public void RegisterDependencies(ContainerBuilder builder)
 	{
-		builder.RegisterType<DatabaseContext>().As<DatabaseContext>();
-		builder.RegisterType<Database.Db>().As<IDb>().SingleInstance();
+		builder.RegisterType<DatabaseContext>().As<DatabaseContext>().InstancePerLifetimeScope();
+		builder.RegisterType<Database.Db>().As<IDb>().InstancePerLifetimeScope();
 		builder.RegisterType<EnvironmentVariableConfiguration>().As<IEnvironmentVariableConfiguration>();
+		builder.RegisterType<EventLoop>().As<EventLoop>().SingleInstance();
 		
 		builder.RegisterInstance(LoggerFactory.Create(
 				logBuilder =>

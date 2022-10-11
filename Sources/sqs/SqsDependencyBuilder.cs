@@ -1,5 +1,6 @@
 using Autofac;
 using core.Dependencies;
+using core.models;
 
 namespace sqs;
 

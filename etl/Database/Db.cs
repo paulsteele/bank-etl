@@ -1,4 +1,3 @@
-using Autofac;
 using core.Db;
 using core.models;
 using Microsoft.EntityFrameworkCore;
@@ -7,54 +6,33 @@ using Microsoft.Extensions.Logging;
 namespace core.Database {
 	public class Db : IDb {
 		private readonly ILogger<Db> _logger;
-		private readonly ILifetimeScope _lifetimeScope;
-		private ILifetimeScope _databaseScope;
-		private DatabaseContext? _databaseContext;
+		private readonly DatabaseContext _databaseContext;
 
-		public Db(ILogger<Db> logger, ILifetimeScope lifetimeScope)
+		public Db(ILogger<Db> logger, DatabaseContext databaseContext)
 		{
 			_logger = logger;
-			_lifetimeScope = lifetimeScope;
+			_databaseContext = databaseContext;
 		}
 
 		public void Init() {
 			_logger.LogInformation("Initializing Database");
-			Context.Database.Migrate();
-
-			_databaseContext = null;
-			_databaseScope.Dispose();
+			_databaseContext.Database.Migrate();
+			_logger.LogInformation("Database Initialized");
 		}
 
-		public BankItem? AddItem(BankItem item)
+		public BankItem AddItem(BankItem item)
 		{
 			if (item.Id != null)
 			{
 				_logger.LogError($"{nameof(AddItem)} can only be called on a new {nameof(BankItem)}");
 			}
 
-			return Context.Items.Add(item).Entity;
-		}
-
-		private DatabaseContext Context
-		{
-			get
-			{
-				// ReSharper disable once InvertIf
-				if (_databaseContext == null)
-				{
-					_databaseScope = _lifetimeScope.BeginLifetimeScope();
-					_databaseContext = _databaseScope.Resolve<DatabaseContext>();
-				}
-
-				return _databaseContext;
-			}
+			return _databaseContext.Add(item).Entity;
 		}
 
 		public void SaveChanges()
 		{
-			Context.SaveChanges();
-			_databaseContext = null;
-			_databaseScope.Dispose();
+			_databaseContext.SaveChanges();
 		}
 	}
 }

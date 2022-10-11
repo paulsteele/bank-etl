@@ -1,6 +1,8 @@
-namespace sqs;
+using core.Db;
+
+namespace core.models;
 
 public interface ISource
 {
-	void StartListening();
+	Task Poll(IDb database);
 }
