@@ -22,6 +22,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\core\core.csproj" />
+      <ProjectReference Include="..\middleware\chase\chase.csproj" />
       <ProjectReference Include="..\Sources\sqs\sqs.csproj" />
     </ItemGroup>
 

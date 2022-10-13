@@ -1,7 +1,6 @@
 using core.Db;
 using core.models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Microsoft.Extensions.Logging;
 
 namespace core.Database {
@@ -31,6 +30,11 @@ namespace core.Database {
 			item.Id = Guid.NewGuid();
 
 			return _databaseContext.Add(item).Entity;
+		}
+
+		public IEnumerable<BankItem> GetItemsFromState(string state)
+		{
+			return _databaseContext.Items.Where(item => state.Equals(item.State));
 		}
 
 		public void SaveChanges()

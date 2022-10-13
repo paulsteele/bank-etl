@@ -1,4 +1,5 @@
 using Autofac;
+using chase;
 using core.Configuration;
 using core.Database;
 using core.Db;
@@ -16,6 +17,7 @@ public class EtlDependencyContainerBuilder : IDependencyContainerBuilder
 		
 		new EtlDependencyContainerBuilder().RegisterDependencies(builder);
 		new SqsDependencyBuilder().RegisterDependencies(builder);
+		new ChaseDependencyBuilder().RegisterDependencies(builder);
 
 		DependencyContainer.Instance =  builder.Build();
 	}

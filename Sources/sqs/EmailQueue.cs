@@ -41,7 +41,7 @@ internal class EmailQueue : ISource
 			_logger, async () =>
 			{
 				var client = CreateClient();
-				var response = await client.ReceiveMessageAsync(new ReceiveMessageRequest(_environmentVariableConfiguration.SqsQueueUrl) {WaitTimeSeconds = 10, MaxNumberOfMessages = 5});
+				var response = await client.ReceiveMessageAsync(new ReceiveMessageRequest(_environmentVariableConfiguration.SqsQueueUrl) {WaitTimeSeconds = 0, MaxNumberOfMessages = 5});
 				if (!AssertSuccess(response))
 				{
 					return;

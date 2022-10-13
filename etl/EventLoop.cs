@@ -9,23 +9,33 @@ namespace core;
 public class EventLoop
 {
 	private readonly IEnumerable<ISource> _sources;
+	private readonly IEnumerable<ITransformer> _transformers;
 	private readonly ILifetimeScope _lifetimeScope;
 
-	public EventLoop(IEnumerable<ISource> sources, ILifetimeScope lifetimeScope)
+	public EventLoop(
+		IEnumerable<ISource> sources, 
+		IEnumerable<ITransformer> transformers,
+		ILifetimeScope lifetimeScope)
 	{
 		_sources = sources;
+		_transformers = transformers;
 		_lifetimeScope = lifetimeScope;
 	}
 
-	public void Start()
+	public async Task Start()
 	{
 		while (true)
 		{
-			using var scope = _lifetimeScope.BeginLifetimeScope();
+			await using var scope = _lifetimeScope.BeginLifetimeScope();
 			var db = scope.Resolve<IDb>();
 			foreach (var source in _sources)
 			{
-				source.Poll(db);
+				await source.Poll(db);
+			}
+
+			foreach (var transformer in _transformers)
+			{
+				await transformer.Transform(db.GetItemsFromState(transformer.SourceState));
 			}
 			
 			Thread.Sleep(10000);
