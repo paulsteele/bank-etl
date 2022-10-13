@@ -19,10 +19,10 @@ public class EventLoop
 
 	public void Start()
 	{
-			using var scope = _lifetimeScope.BeginLifetimeScope();
-			var db = scope.Resolve<IDb>();
 		while (true)
 		{
+			using var scope = _lifetimeScope.BeginLifetimeScope();
+			var db = scope.Resolve<IDb>();
 			foreach (var source in _sources)
 			{
 				source.Poll(db);

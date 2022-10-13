@@ -41,7 +41,7 @@ internal class EmailQueue : ISource
 			_logger, async () =>
 			{
 				var client = CreateClient();
-				var response = await client.ReceiveMessageAsync(new ReceiveMessageRequest(_environmentVariableConfiguration.SqsQueueUrl) {WaitTimeSeconds = 10});
+				var response = await client.ReceiveMessageAsync(new ReceiveMessageRequest(_environmentVariableConfiguration.SqsQueueUrl) {WaitTimeSeconds = 10, MaxNumberOfMessages = 5});
 				if (!AssertSuccess(response))
 				{
 					return;
@@ -61,11 +61,11 @@ internal class EmailQueue : ISource
 					database.SaveChanges();
 					_logger.LogInformation($"Added {message.MessageId}");
 
-					// var deleteResponse = await client.DeleteMessageAsync(new DeleteMessageRequest(_environmentVariableConfiguration.SqsQueueUrl, message.ReceiptHandle));
-					// if (AssertSuccess(deleteResponse))
-					// {
-						// _logger.LogInformation($"Removed {message.MessageId} from the queue");
-					// }
+					var deleteResponse = await client.DeleteMessageAsync(new DeleteMessageRequest(_environmentVariableConfiguration.SqsQueueUrl, message.ReceiptHandle));
+					if (AssertSuccess(deleteResponse))
+					{
+					 _logger.LogInformation($"Removed {message.MessageId} from the queue");
+					}
 				}
 			}
 		);

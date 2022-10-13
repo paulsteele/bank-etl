@@ -25,15 +25,6 @@ public class DatabaseContext : DbContext
 		optionsBuilder.EnableSensitiveDataLogging();
 	}
 	
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
-	{
-		modelBuilder.Entity<BankItem>()
-			.Property(b => b.Id)
-			.ValueGeneratedOnAdd()
-			.HasDefaultValueSql("(uuid())")
-			.IsRequired();
-	}
-
 	public class MigrationContextFactory : IDesignTimeDbContextFactory<DatabaseContext>
 	{
 		public DatabaseContext CreateDbContext(string[] args)

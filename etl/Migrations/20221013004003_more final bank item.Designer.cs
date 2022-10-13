@@ -11,8 +11,8 @@ using core.Database;
 namespace core.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221009150419_change to uuid")]
-    partial class changetouuid
+    [Migration("20221013004003_more final bank item")]
+    partial class morefinalbankitem
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,30 +23,26 @@ namespace core.Migrations
 
             modelBuilder.Entity("core.models.BankItem", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
-                        .HasDefaultValueSql("(uuid())");
+                        .HasColumnType("char(36)");
 
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal?>("Amount")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("Category")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("DiscordMessage")
+                    b.Property<Guid?>("DiscordMessageId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("RawPayload")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Timestamp")
+                    b.Property<DateTime?>("Timestamp")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");

@@ -23,8 +23,7 @@ namespace core.Migrations
                 {
                     b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
-                        .HasDefaultValueSql("(uuid())");
+                        .HasColumnType("char(36)");
 
                     b.Property<decimal?>("Amount")
                         .HasColumnType("decimal(65,30)");
@@ -32,7 +31,7 @@ namespace core.Migrations
                     b.Property<string>("Category")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("DiscordMessage")
+                    b.Property<Guid?>("DiscordMessageId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("RawPayload")

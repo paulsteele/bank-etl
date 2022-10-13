@@ -1,6 +1,7 @@
 using core.Db;
 using core.models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Microsoft.Extensions.Logging;
 
 namespace core.Database {
@@ -26,6 +27,8 @@ namespace core.Database {
 			{
 				_logger.LogError($"{nameof(AddItem)} can only be called on a new {nameof(BankItem)}");
 			}
+			
+			item.Id = Guid.NewGuid();
 
 			return _databaseContext.Add(item).Entity;
 		}
