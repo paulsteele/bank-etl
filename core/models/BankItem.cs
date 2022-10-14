@@ -16,6 +16,7 @@ public class BankItem
 	public Guid? DiscordMessageId { get; set; }
 	// Transaction Details
 	public decimal? Amount { get; set; }
+	public string? Vendor { get; set; }
 	public DateTime? Timestamp { get; set; }
 	public string? Category { get; set; }
 }

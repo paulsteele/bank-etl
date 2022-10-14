@@ -26,19 +26,22 @@ public class EventLoop
 	{
 		while (true)
 		{
-			await using var scope = _lifetimeScope.BeginLifetimeScope();
-			var db = scope.Resolve<IDb>();
-			foreach (var source in _sources)
+			await using (var scope = _lifetimeScope.BeginLifetimeScope())
 			{
-				await source.Poll(db);
-			}
-
-			foreach (var transformer in _transformers)
-			{
-				foreach (var bankItem in db.GetItemsFromState(transformer.SourceState))
+				var db = scope.Resolve<IDb>();
+				foreach (var source in _sources)
 				{
-					await transformer.Transform(bankItem);
+					await source.Poll(db);
 				}
+
+				foreach (var transformer in _transformers)
+				{
+					foreach (var bankItem in db.GetItemsFromState(transformer.SourceState))
+					{
+						await transformer.Transform(bankItem);
+					}
+				}
+				db.SaveChanges();
 			}
 			
 			Thread.Sleep(10000);
