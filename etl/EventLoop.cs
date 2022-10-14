@@ -35,7 +35,10 @@ public class EventLoop
 
 			foreach (var transformer in _transformers)
 			{
-				await transformer.Transform(db.GetItemsFromState(transformer.SourceState));
+				foreach (var bankItem in db.GetItemsFromState(transformer.SourceState))
+				{
+					await transformer.Transform(bankItem);
+				}
 			}
 			
 			Thread.Sleep(10000);

@@ -5,6 +5,7 @@ using core.Database;
 using core.Db;
 using core.Dependencies;
 using Microsoft.Extensions.Logging;
+using ses;
 using sqs;
 
 namespace core;
@@ -18,6 +19,7 @@ public class EtlDependencyContainerBuilder : IDependencyContainerBuilder
 		new EtlDependencyContainerBuilder().RegisterDependencies(builder);
 		new SqsDependencyBuilder().RegisterDependencies(builder);
 		new ChaseDependencyBuilder().RegisterDependencies(builder);
+		new SesDependencyBuilder().RegisterDependencies(builder);
 
 		DependencyContainer.Instance =  builder.Build();
 	}

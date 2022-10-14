@@ -11,6 +11,7 @@ public class BankItem
 	public string? State { get; set; }
 	// sqs Details
 	public string? RawPayload { get; set; }
+	public string? RawEmail { get; set; }
 	// Discord Details
 	public Guid? DiscordMessageId { get; set; }
 	// Transaction Details

@@ -11,15 +11,10 @@ public class ChaseTransformer : ITransformer
 	{
 		_logger = logger;
 	}
-	public string SourceState => "ReceivedFromSqs";
+	public string SourceState => "ParsedFromSes";
 	
-	public Task Transform(IEnumerable<BankItem> items)
+	public Task Transform(BankItem item)
 	{
-		foreach (var item in items)
-		{
-			var payload = item.RawPayload;
-		}
-		
 		return Task.CompletedTask;
 	}
 }
