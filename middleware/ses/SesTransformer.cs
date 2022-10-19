@@ -42,6 +42,7 @@ public class SesTransformer : ITransformer
 				
 				item.RawEmail = Encoding.UTF8.GetString(Convert.FromBase64String(message.Content));
 				item.State = DestinationState;
+				_logger.LogInformation($"Successfully parsed {item.Id}");
 			}
 		);
 

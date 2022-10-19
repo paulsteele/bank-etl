@@ -34,6 +34,7 @@ public class ChaseTransformer : ITransformer
 				item.Amount = decimal.Parse(amount);
 				item.Vendor = location;
 				item.State = DestinationState;
+				_logger.LogInformation($"Successfully parsed {item.Id} - {item.Amount} - {item.Vendor}");
 			}
 		);
 		return Task.CompletedTask;
