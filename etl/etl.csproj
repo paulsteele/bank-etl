@@ -23,6 +23,7 @@
     <ItemGroup>
       <ProjectReference Include="..\core\core.csproj" />
       <ProjectReference Include="..\middleware\chase\chase.csproj" />
+      <ProjectReference Include="..\middleware\discord\discord.csproj" />
       <ProjectReference Include="..\middleware\ses\ses.csproj" />
       <ProjectReference Include="..\sinks\firefly-iii\firefly-iii.csproj" />
       <ProjectReference Include="..\Sources\sqs\sqs.csproj" />

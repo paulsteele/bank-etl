@@ -12,6 +12,7 @@ namespace core.Configuration {
 			AwsSecretAccessKey = GetVar(nameof(AwsSecretAccessKey), "secret", ConvertString);
 			SqsQueueUrl = GetVar(nameof(SqsQueueUrl), "example", ConvertString);
 			DiscordBotKey = GetVar(nameof(DiscordBotKey), "key", ConvertString);
+			DiscordChannelName = GetVar(nameof(DiscordBotKey), "bank-transactions", ConvertString);
 			FireflyHost = GetVar(nameof(FireflyHost), "https://example.com", ConvertString);
 			FireflyToken = GetVar(nameof(FireflyToken), "token", ConvertString);
 		}
@@ -34,6 +35,7 @@ namespace core.Configuration {
 		public string AwsSecretAccessKey { get; }
 		public string SqsQueueUrl { get; }
 		public string DiscordBotKey { get; }
+		public string DiscordChannelName { get; }
 		public string FireflyToken { get; }
 		public string FireflyHost { get; }
 	}

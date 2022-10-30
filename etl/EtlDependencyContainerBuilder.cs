@@ -4,6 +4,7 @@ using core.Configuration;
 using core.Database;
 using core.Db;
 using core.Dependencies;
+using discord;
 using firefly_iii;
 using Microsoft.Extensions.Logging;
 using ses;
@@ -22,6 +23,7 @@ public class EtlDependencyContainerBuilder : IDependencyContainerBuilder
 		new ChaseDependencyBuilder().RegisterDependencies(builder);
 		new SesDependencyBuilder().RegisterDependencies(builder);
 		new FireflyDependencyBuilder().RegisterDependencies(builder);
+		new DiscordDependencyBuilder().RegisterDependencies(builder);
 
 		DependencyContainer.Instance =  builder.Build();
 	}
