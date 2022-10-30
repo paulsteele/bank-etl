@@ -53,6 +53,7 @@ public class FireflyCategorySource : ICategorySource
 			{
 				Name = b.Attributes!.Name,
 				FireflyId = b.Id,
+				FireflyOrder = b.Attributes.Order,
 				State = ReceivedFromFirefly
 			}
 		);

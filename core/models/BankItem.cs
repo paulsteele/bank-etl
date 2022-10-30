@@ -17,6 +17,6 @@ public class BankItem
 	// Transaction Details
 	public decimal? Amount { get; set; }
 	public string? Vendor { get; set; }
-	public DateTime? Timestamp { get; set; }
+	public DateTimeOffset? Timestamp { get; set; }
 	public Category? Category { get; set; }
 }

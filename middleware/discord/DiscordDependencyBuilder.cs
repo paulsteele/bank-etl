@@ -11,5 +11,6 @@ public class DiscordDependencyBuilder : IDependencyContainerBuilder
 		builder.RegisterType<DiscordClient>().As<DiscordClient>().SingleInstance();
 		builder.RegisterType<CategoryEmojiRequestTransformer>().As<ICategoryTransformer>().SingleInstance();
 		builder.RegisterType<CategoryEmojiResponseTransformer>().As<ICategoryTransformer>().SingleInstance();
+		builder.RegisterType<ItemRequestTransformer>().As<IBankItemTransformer>().SingleInstance();
 	}
 }

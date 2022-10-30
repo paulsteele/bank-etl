@@ -94,4 +94,29 @@ public class DiscordClient
 
 		return reactions;
 	}
+
+	public async Task<bool> React(ulong messageId, string?[] emojis)
+	{
+		var channel = GetChannel();
+		if (channel == null)
+		{
+			_logger.LogError($"Could not find channel {_environmentVariableConfiguration.DiscordChannelName}");
+			return false;
+		}
+
+		var message = await channel.GetMessageAsync(messageId);
+
+		if (message == null)
+		{
+			_logger.LogError($"Could not find message for {messageId}");
+			return false;
+		}
+		
+		foreach (var emoji in emojis)
+		{
+			await message.AddReactionAsync(new Emoji(emoji));
+		}
+
+		return true;
+	}
 }

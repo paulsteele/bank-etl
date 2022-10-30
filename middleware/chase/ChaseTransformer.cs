@@ -35,6 +35,7 @@ public class ChaseBankItemTransformer : IBankItemTransformer
 				item.Amount = decimal.Parse(amount);
 				item.Vendor = location;
 				item.State = DestinationState;
+				item.Timestamp = DateTimeOffset.Now;
 				_logger.LogInformation($"Successfully parsed {item.Id} - {item.Amount} - {item.Vendor}");
 			}
 		);

@@ -56,7 +56,9 @@ namespace core.Database {
 		
 		public Category[] GetAllCategories()
 		{
-			return _databaseContext.Categories.ToArray();
+			return _databaseContext.Categories
+				.OrderBy(c => c.FireflyOrder)
+				.ToArray();
 		}
 
 		public void SaveChanges()
