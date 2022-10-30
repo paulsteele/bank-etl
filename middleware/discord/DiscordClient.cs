@@ -9,7 +9,7 @@ public class DiscordClient
 {
 	private readonly IEnvironmentVariableConfiguration _environmentVariableConfiguration;
 	private readonly ILogger<DiscordClient> _logger;
-	private DiscordSocketClient _client;
+	private readonly DiscordSocketClient _client;
 
 	public DiscordClient(
 		IEnvironmentVariableConfiguration environmentVariableConfiguration,
@@ -51,5 +51,31 @@ public class DiscordClient
 		}
 		return Task.CompletedTask;
 	}
+
+	private SocketTextChannel? GetChannel()
+	{
+		return _client.Guilds.Select(
+			g =>
+			{
+				var guildChannel = g.Channels.FirstOrDefault(c => c.Name == _environmentVariableConfiguration.DiscordChannelName);
+
+				return guildChannel == null ? null : g.GetTextChannel(guildChannel.Id);
+			}
+		).FirstOrDefault();
+	}
 	
+	public async Task<ulong> SendMessage(string message)
+	{
+		var channel = GetChannel();
+
+		if (channel == null)
+		{
+			_logger.LogError($"Could not find channel {_environmentVariableConfiguration.DiscordChannelName}");
+			return 0;
+		}
+
+		var response = await channel.SendMessageAsync(message);
+
+		return response.Id;
+	}
 }

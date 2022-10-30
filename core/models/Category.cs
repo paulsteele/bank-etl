@@ -10,5 +10,6 @@ public class Category
 	public string Name { get; set; }
 	public string State { get; set; }
 	public string FireflyId { get; set; }
+	public ulong? DiscordMessageId { get; set; }
 	public char? Emoji { get; set; }
 }

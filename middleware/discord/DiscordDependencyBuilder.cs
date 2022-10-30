@@ -9,6 +9,6 @@ public class DiscordDependencyBuilder : IDependencyContainerBuilder
 	public void RegisterDependencies(ContainerBuilder builder)
 	{
 		builder.RegisterType<DiscordClient>().As<DiscordClient>().SingleInstance();
-		builder.RegisterType<CategoryEmojiTransformer>().As<ICategoryTransformer>().SingleInstance();
+		builder.RegisterType<CategoryEmojiRequester>().As<ICategoryTransformer>().SingleInstance();
 	}
 }

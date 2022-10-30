@@ -13,7 +13,7 @@ public class BankItem
 	public string? RawPayload { get; set; }
 	public string? RawEmail { get; set; }
 	// Discord Details
-	public Guid? DiscordMessageId { get; set; }
+	public ulong? DiscordMessageId { get; set; }
 	// Transaction Details
 	public decimal? Amount { get; set; }
 	public string? Vendor { get; set; }
