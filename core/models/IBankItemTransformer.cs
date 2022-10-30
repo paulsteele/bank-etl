@@ -1,6 +1,6 @@
 namespace core.models;
 
-public interface ITransformer
+public interface IBankItemTransformer
 {
 	string SourceState { get; } 
 	Task Transform(BankItem item);

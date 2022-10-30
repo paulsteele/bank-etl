@@ -6,5 +6,8 @@ public interface IDb {
 	void Init();
 	BankItem? AddItem(BankItem item);
 	IEnumerable<BankItem> GetItemsFromState(string state);
+	Category? AddCategory(Category category);
+	IEnumerable<Category> GetCategoriesFromState(string state);
+	IEnumerable<Category> GetAllCategories();
 	void SaveChanges();
 }

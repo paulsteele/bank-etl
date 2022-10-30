@@ -5,11 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace chase;
 
-public class ChaseTransformer : ITransformer
+public class ChaseBankItemTransformer : IBankItemTransformer
 {
-	private readonly ILogger<ChaseTransformer> _logger;
+	private readonly ILogger<ChaseBankItemTransformer> _logger;
 
-	public ChaseTransformer(ILogger<ChaseTransformer> logger)
+	public ChaseBankItemTransformer(ILogger<ChaseBankItemTransformer> logger)
 	{
 		_logger = logger;
 	}

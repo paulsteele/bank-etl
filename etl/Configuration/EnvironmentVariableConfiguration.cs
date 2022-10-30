@@ -11,6 +11,9 @@ namespace core.Configuration {
 			AwsAccessKey = GetVar(nameof(AwsAccessKey), "access", ConvertString);
 			AwsSecretAccessKey = GetVar(nameof(AwsSecretAccessKey), "secret", ConvertString);
 			SqsQueueUrl = GetVar(nameof(SqsQueueUrl), "example", ConvertString);
+			DiscordBotKey = GetVar(nameof(DiscordBotKey), "key", ConvertString);
+			FireflyHost = GetVar(nameof(FireflyHost), "https://example.com", ConvertString);
+			FireflyToken = GetVar(nameof(FireflyToken), "token", ConvertString);
 		}
 
 		private static T GetVar<T>(string name, T defaultValue, Func<string, T> converter) {
@@ -22,10 +25,6 @@ namespace core.Configuration {
 			return s;
 		}
 
-		private static int ConvertInt(string s) {
-			return int.Parse(s);
-		}
-
 		public string DatabaseUrl { get; }
 		public string DatabasePort { get; }
 		public string DatabaseUser { get; }
@@ -34,5 +33,8 @@ namespace core.Configuration {
 		public string AwsAccessKey { get; }
 		public string AwsSecretAccessKey { get; }
 		public string SqsQueueUrl { get; }
+		public string DiscordBotKey { get; }
+		public string FireflyToken { get; }
+		public string FireflyHost { get; }
 	}
 }

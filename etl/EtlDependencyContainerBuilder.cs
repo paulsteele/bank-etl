@@ -4,6 +4,7 @@ using core.Configuration;
 using core.Database;
 using core.Db;
 using core.Dependencies;
+using firefly_iii;
 using Microsoft.Extensions.Logging;
 using ses;
 using sqs;
@@ -20,6 +21,7 @@ public class EtlDependencyContainerBuilder : IDependencyContainerBuilder
 		new SqsDependencyBuilder().RegisterDependencies(builder);
 		new ChaseDependencyBuilder().RegisterDependencies(builder);
 		new SesDependencyBuilder().RegisterDependencies(builder);
+		new FireflyDependencyBuilder().RegisterDependencies(builder);
 
 		DependencyContainer.Instance =  builder.Build();
 	}

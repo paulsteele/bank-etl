@@ -6,13 +6,13 @@ using Microsoft.Extensions.Logging;
 
 namespace ses;
 
-public class SesTransformer : ITransformer
+public class SesBankItemTransformer : IBankItemTransformer
 {
-	private readonly ILogger<SesTransformer> _logger;
+	private readonly ILogger<SesBankItemTransformer> _logger;
 	public string SourceState => "ReceivedFromSqs";
 	private string DestinationState => "ParsedFromSes";
 
-	public SesTransformer(ILogger<SesTransformer> logger)
+	public SesBankItemTransformer(ILogger<SesBankItemTransformer> logger)
 	{
 		_logger = logger;
 	}

@@ -8,6 +8,6 @@ public class SesDependencyBuilder : IDependencyContainerBuilder
 {
 	public void RegisterDependencies(ContainerBuilder builder)
 	{
-		builder.RegisterType<SesTransformer>().As<ITransformer>().SingleInstance();
+		builder.RegisterType<SesBankItemTransformer>().As<IBankItemTransformer>().SingleInstance();
 	}
 }

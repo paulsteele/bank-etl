@@ -2,7 +2,7 @@ using core.Db;
 
 namespace core.models;
 
-public interface ISource
+public interface ICategorySource
 {
 	Task Poll(IDb database);
 }

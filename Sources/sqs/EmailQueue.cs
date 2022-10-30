@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace sqs;
 
-internal class EmailQueue : ISource
+internal class EmailQueue : IBankItemSource
 {
 	private readonly IEnvironmentVariableConfiguration _environmentVariableConfiguration;
 	private readonly ILogger<EmailQueue> _logger;

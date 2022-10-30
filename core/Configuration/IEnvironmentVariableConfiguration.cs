@@ -9,4 +9,7 @@ public interface IEnvironmentVariableConfiguration {
 	string AwsAccessKey { get; }
 	string AwsSecretAccessKey { get; }
 	string SqsQueueUrl { get; }
+	string DiscordBotKey { get; }
+	string FireflyToken { get; }
+	string FireflyHost { get; }
 }

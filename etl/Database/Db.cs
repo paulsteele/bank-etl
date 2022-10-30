@@ -37,6 +37,28 @@ namespace core.Database {
 			return _databaseContext.Items.Where(item => state.Equals(item.State));
 		}
 
+		public Category? AddCategory(Category category)
+		{
+			if (category.Id != null)
+			{
+				_logger.LogError($"{nameof(AddCategory)} can only be called on a new {nameof(Category)}");
+			}
+
+			category.Id = Guid.NewGuid();
+
+			return _databaseContext.Add(category).Entity;
+		}
+
+		public IEnumerable<Category> GetCategoriesFromState(string state)
+		{
+			return _databaseContext.Categories.Where(category => state.Equals(category.State));
+		}
+		
+		public IEnumerable<Category> GetAllCategories()
+		{
+			return _databaseContext.Categories;
+		}
+
 		public void SaveChanges()
 		{
 			_databaseContext.SaveChanges();

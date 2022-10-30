@@ -10,6 +10,7 @@ public class DatabaseContext : DbContext
 	private readonly IEnvironmentVariableConfiguration _configuration;
 	
 	public DbSet<BankItem> Items { get; set; }
+	public DbSet<Category> Categories { get; set; }
 
 	public DatabaseContext(IEnvironmentVariableConfiguration configuration)
 	{
