@@ -78,4 +78,20 @@ public class DiscordClient
 
 		return response.Id;
 	}
+
+	public async Task<(string Name, int ReactionCount)[]> GetReactions(ulong messageId)
+	{
+		var channel = GetChannel();
+		if (channel == null)
+		{
+			_logger.LogError($"Could not find channel {_environmentVariableConfiguration.DiscordChannelName}");
+			return Array.Empty<(string Name, int ReactionCount)>();
+		}
+
+		var message = await channel.GetMessageAsync(messageId);
+
+		var reactions = message.Reactions.Select(pair => (pair.Key.Name, pair.Value.ReactionCount)).ToArray();
+
+		return reactions;
+	}
 }

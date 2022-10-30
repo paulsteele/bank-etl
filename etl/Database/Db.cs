@@ -32,9 +32,9 @@ namespace core.Database {
 			return _databaseContext.Add(item).Entity;
 		}
 
-		public IEnumerable<BankItem> GetItemsFromState(string state)
+		public BankItem[] GetItemsFromState(string state)
 		{
-			return _databaseContext.Items.Where(item => state.Equals(item.State));
+			return _databaseContext.Items.Where(item => state.Equals(item.State)).ToArray();
 		}
 
 		public Category? AddCategory(Category category)
@@ -49,14 +49,14 @@ namespace core.Database {
 			return _databaseContext.Add(category).Entity;
 		}
 
-		public IEnumerable<Category> GetCategoriesFromState(string state)
+		public Category[] GetCategoriesFromState(string state)
 		{
-			return _databaseContext.Categories.Where(category => state.Equals(category.State));
+			return _databaseContext.Categories.Where(category => state.Equals(category.State)).ToArray();
 		}
 		
-		public IEnumerable<Category> GetAllCategories()
+		public Category[] GetAllCategories()
 		{
-			return _databaseContext.Categories;
+			return _databaseContext.Categories.ToArray();
 		}
 
 		public void SaveChanges()

@@ -1,16 +1,17 @@
+using core.Db;
 using core.models;
 using Microsoft.Extensions.Logging;
 
 namespace discord;
 
-public class CategoryEmojiRequester : ICategoryTransformer
+public class CategoryEmojiRequestTransformer : ICategoryTransformer
 {
 	private readonly DiscordClient _client;
-	private readonly ILogger<CategoryEmojiRequester> _logger;
+	private readonly ILogger<CategoryEmojiRequestTransformer> _logger;
 
-	public CategoryEmojiRequester(
+	public CategoryEmojiRequestTransformer(
 		DiscordClient client, 
-		ILogger<CategoryEmojiRequester> logger
+		ILogger<CategoryEmojiRequestTransformer> logger
 	)
 	{
 		_client = client;
@@ -18,7 +19,7 @@ public class CategoryEmojiRequester : ICategoryTransformer
 	}
 	public string SourceState => "ReceivedFromFirefly";
 	public string WaitingForEmoji => nameof(WaitingForEmoji);
-	public async Task Transform(Category item)
+	public async Task Transform(Category item, IDb _)
 	{
 		var messageId = await _client.SendMessage($"React with the emoji for {item.Name}");
 		if (messageId != 0)

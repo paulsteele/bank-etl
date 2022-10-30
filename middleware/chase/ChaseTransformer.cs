@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using core;
+using core.Db;
 using core.models;
 using Microsoft.Extensions.Logging;
 
@@ -16,7 +17,7 @@ public class ChaseBankItemTransformer : IBankItemTransformer
 	public string SourceState => "ParsedFromSes";
 	private string DestinationState => "ParsedFromChase";
 	
-	public Task Transform(BankItem item)
+	public Task Transform(BankItem item, IDb _)
 	{
 		ErrorCatching.ExecuteWithErrorCatching(
 			_logger, () =>

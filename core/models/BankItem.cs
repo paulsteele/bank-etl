@@ -18,5 +18,5 @@ public class BankItem
 	public decimal? Amount { get; set; }
 	public string? Vendor { get; set; }
 	public DateTime? Timestamp { get; set; }
-	public string? Category { get; set; }
+	public Category? Category { get; set; }
 }

@@ -72,13 +72,14 @@ public class EventLoop
 				foreach (var source in _categorySources)
 				{
 					await source.Poll(db);
+					fastPoll = true;
 				}
 
 				foreach (var transformer in _categoryTransformers)
 				{
 					foreach (var category in db.GetCategoriesFromState(transformer.SourceState))
 					{
-						await transformer.Transform(category);
+						await transformer.Transform(category, db);
 						fastPoll = true;
 					}
 				}
@@ -112,7 +113,7 @@ public class EventLoop
 				{
 					foreach (var bankItem in db.GetItemsFromState(transformer.SourceState))
 					{
-						await transformer.Transform(bankItem);
+						await transformer.Transform(bankItem, db);
 					}
 				}
 				db.SaveChanges();

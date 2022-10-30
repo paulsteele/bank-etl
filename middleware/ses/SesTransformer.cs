@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using core;
+using core.Db;
 using core.models;
 using Microsoft.Extensions.Logging;
 
@@ -16,7 +17,7 @@ public class SesBankItemTransformer : IBankItemTransformer
 	{
 		_logger = logger;
 	}
-	public Task Transform(BankItem item)
+	public Task Transform(BankItem item, IDb _)
 	{
 		if (item.RawPayload == null)
 		{
