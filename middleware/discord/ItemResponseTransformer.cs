@@ -9,7 +9,7 @@ public class ItemResponseTransformer : IBankItemTransformer
 	private readonly DiscordClient _client;
 	private readonly ILogger<ItemResponseTransformer> _logger;
 	public string SourceState => "WaitingForEmoji";
-	public string DestinationState => "ReadyForUpload";
+	private string DestinationState => "ReceivedEmoji";
 	
 	public ItemResponseTransformer(
 		DiscordClient client,

@@ -55,7 +55,7 @@ public class FireflyClient
 		return budgetResponse.Data;
 	}
 
-	public async Task SendTransaction(BankItem item)
+	public async Task<bool> SendTransaction(BankItem item)
 	{
 		var body = new TransactionRequest()
 		{
@@ -94,5 +94,7 @@ public class FireflyClient
 		{
 			_logger.LogError(responseContent);
 		}
+
+		return response.IsSuccessStatusCode;
 	}
 }

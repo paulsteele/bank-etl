@@ -32,6 +32,7 @@ public class BudgetAttributes
 	public string BugetCurrencyCode { get; set; }
 	
 	[JsonPropertyName("auto_budget_amount")]
+	[JsonConverter(typeof(StringToDecimalConverter))]
 	public decimal? BudgetAmount { get; set; }
 	
 	[JsonPropertyName("auto_budget_period")]

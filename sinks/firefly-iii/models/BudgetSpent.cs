@@ -5,10 +5,11 @@ namespace firefly_iii.models;
 public class BudgetSpent
 {
 	[JsonPropertyName("sum")]
-	public string Sum { get; set; }
+	[JsonConverter(typeof(StringToDecimalConverter))]
+	public decimal? Sum { get; set; }
 	
 	[JsonPropertyName("currency_id")]
-	public string CurrencyId { get; set; }
+	public int CurrencyId { get; set; }
 	
 	[JsonPropertyName("currency_code")]
 	public string CurrencyCode { get; set; }

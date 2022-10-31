@@ -16,6 +16,7 @@ public class BankItem
 	public ulong? DiscordMessageId { get; set; }
 	// Transaction Details
 	public decimal? Amount { get; set; }
+	public decimal? AmountInCategoryAfter { get; set; }
 	public string? Vendor { get; set; }
 	public DateTimeOffset? Timestamp { get; set; }
 	public Category? Category { get; set; }

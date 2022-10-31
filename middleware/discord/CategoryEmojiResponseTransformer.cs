@@ -51,6 +51,12 @@ public class CategoryEmojiResponseTransformer : ICategoryTransformer
 			
 			item.Emoji = reactions[0].Name;
 			item.State = Setup;
+
+			if (item.DiscordMessageId.HasValue)
+			{
+				await _client.React(item.DiscordMessageId.Value, new[] {"✅"});
+			}
+			
 			_logger.LogInformation($"Setup {item.Name} with emoji {item.Emoji}");
 		}
 	}
