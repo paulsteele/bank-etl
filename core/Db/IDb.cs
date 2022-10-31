@@ -9,5 +9,6 @@ public interface IDb {
 	Category? AddCategory(Category category);
 	Category[] GetCategoriesFromState(string state);
 	Category[] GetAllCategories();
+	void LoadForeignKeys(BankItem item);
 	void SaveChanges();
 }

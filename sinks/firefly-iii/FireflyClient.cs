@@ -1,6 +1,8 @@
 ﻿using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Text.Json;
 using core.Configuration;
+using core.models;
 using firefly_iii.models;
 using Microsoft.Extensions.Logging;
 
@@ -51,5 +53,46 @@ public class FireflyClient
 			return Array.Empty<Budget>();
 		}
 		return budgetResponse.Data;
+	}
+
+	public async Task SendTransaction(BankItem item)
+	{
+		var body = new TransactionRequest()
+		{
+			Transactions = new[]
+			{
+				new Transaction()
+				{
+					Type = "withdrawal",
+					BudgetId = item.Category!.FireflyId,
+					Date = item.Timestamp ?? DateTimeOffset.Now,
+					Amount = $"{item.Amount:F2}",
+					Description = item.Vendor,
+					SourceId = "1"
+				}
+			}
+		};
+		
+		var requestUrl = $"{_environmentVariableConfiguration.FireflyHost}/api/v1/transactions";
+		var content = new StringContent(JsonSerializer.Serialize(body));
+		content.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Application.Json);
+		
+		var request = new HttpRequestMessage(HttpMethod.Post, requestUrl)
+		{
+			Content = content
+		};
+		request.Headers.Add("accept", "application/vnd.api+json");
+		var response = await _httpClient.SendAsync(request);
+
+		var responseContent = await response.Content.ReadAsStringAsync();
+
+		if (response.IsSuccessStatusCode)
+		{
+			_logger.LogInformation($"Successfully saved {item.Id}");
+		}
+		else
+		{
+			_logger.LogError(responseContent);
+		}
 	}
 }

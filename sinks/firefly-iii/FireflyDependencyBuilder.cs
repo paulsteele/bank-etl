@@ -10,5 +10,6 @@ public class FireflyDependencyBuilder : IDependencyContainerBuilder
 	{
 		builder.RegisterType<FireflyClient>().As<FireflyClient>().SingleInstance();
 		builder.RegisterType<FireflyCategorySource>().As<ICategorySource>().SingleInstance();
+		builder.RegisterType<TransactionTransformer>().As<IBankItemTransformer>().SingleInstance();
 	}
 }

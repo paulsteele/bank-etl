@@ -61,6 +61,12 @@ namespace core.Database {
 				.ToArray();
 		}
 
+		public void LoadForeignKeys(BankItem item)
+		{
+			var entry = _databaseContext.Entry(item);
+			entry.Reference(e => e.Category).Load();
+		}
+
 		public void SaveChanges()
 		{
 			_databaseContext.SaveChanges();
