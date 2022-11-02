@@ -7,7 +7,7 @@ namespace core.Configuration {
 			DatabasePort = GetVar(nameof(DatabasePort), "3306", ConvertString);
 			DatabaseUser = GetVar(nameof(DatabaseUser), "root", ConvertString);
 			DatabasePassword = GetVar(nameof(DatabasePassword), "pass", ConvertString);
-			DatabaseName = GetVar(nameof(DatabaseName), "bank-etl", ConvertString);
+			DatabaseName = GetVar(nameof(DatabaseName), "banketl", ConvertString);
 			AwsAccessKey = GetVar(nameof(AwsAccessKey), "access", ConvertString);
 			AwsSecretAccessKey = GetVar(nameof(AwsSecretAccessKey), "secret", ConvertString);
 			SqsQueueUrl = GetVar(nameof(SqsQueueUrl), "example", ConvertString);

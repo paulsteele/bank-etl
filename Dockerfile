@@ -3,16 +3,10 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["firefly-iii-auto-connector.csproj", "./"]
-RUN dotnet restore "firefly-iii-auto-connector.csproj"
 COPY . .
-WORKDIR "/src/"
-RUN dotnet build "firefly-iii-auto-connector.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "firefly-iii-auto-connector.csproj" -c Release -o /app/publish
+RUN ./build.sh compile
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "firefly-iii-auto-connector.dll"]
+COPY --from=build /etl/bin/Debug/net6.0 .
+ENTRYPOINT ["dotnet", "etl.dll"]

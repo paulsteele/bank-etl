@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bank-etl
+  namespace: deployments
+  labels:
+    app: bank-etl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bank-etl
+  template:
+    metadata:
+      labels:
+        app: bank-etl
+    spec:
+      containers:
+        - name: bank-etl
+          image: registry.paul-steele.com/bank-etl:$BUILD_TAG
+          imagePullPolicy: Always
+          env:
+            - name: DatabaseUrl
+              value: 192.168.0.101
+            - name: DatabasePort
+              value: "3307"
+            - name: DatabaseName
+              value: banketl
+            - name: DatabaseUser
+              valueFrom:
+                secretKeyRef:
+                  name: database-credentials
+                  key: user
+            - name: DatabasePassword
+              valueFrom:
+                secretKeyRef:
+                  name: database-credentials
+                  key: password
+            - name: SqsQueueUrl
+              valueFrom:
+                secretKeyRef:
+                  name: bank-etl
+                  key: SqsQueueUrl
+            - name: AwsAccessKey
+              valueFrom:
+                secretKeyRef:
+                  name: bank-etl
+                  key: AwsAccessKey
+            - name: AwsSecretAccessKey
+              valueFrom:
+                secretKeyRef:
+                  name: bank-etl
+                  key: AwsSecretAccessKey
+            - name: FireflyHost
+              valueFrom:
+                secretKeyRef:
+                  name: bank-etl
+                  key: FireflyHost
+            - name: FireflyToken
+              valueFrom:
+                secretKeyRef:
+                  name: bank-etl
+                  key: FireflyToken
+            - name: DiscordBotKey
+              valueFrom:
+                secretKeyRef:
+                  name: bank-etl
+                  key: DiscordBotKey
+      imagePullSecrets:
+        - name: registry.paul-steele.com
