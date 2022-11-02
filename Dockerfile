@@ -8,5 +8,5 @@ RUN ./build.sh compile
 
 FROM base AS final
 WORKDIR /app
-COPY --from=build /etl/bin/Debug/net6.0 .
+COPY --from=build /src/etl/bin/Debug/net6.0 .
 ENTRYPOINT ["dotnet", "etl.dll"]
