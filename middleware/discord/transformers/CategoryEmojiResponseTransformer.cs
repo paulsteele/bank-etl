@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace discord;
 
-public class CategoryEmojiResponseTransformer : ICategoryTransformer
+public class CategoryEmojiResponseTransformer : ITransformer<Category>
 {
 	private readonly DiscordClient _client;
 	private readonly ILogger<CategoryEmojiResponseTransformer> _logger;
@@ -19,7 +19,6 @@ public class CategoryEmojiResponseTransformer : ICategoryTransformer
 		_logger = logger;
 	}
 	public string SourceState => "WaitingForEmoji";
-	private const string ReceivedFromFirefly = nameof(ReceivedFromFirefly);
 	public string Setup => nameof(Setup);
 	public async Task Transform(Category item, IDb db)
 	{

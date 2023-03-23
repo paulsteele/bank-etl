@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sqs", "Sources\sqs\sqs.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "firefly-iii", "sinks\firefly-iii\firefly-iii.csproj", "{F0D28738-6510-4BB4-8AF1-FC3D239AFAB0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Transformers", "Transformers", "{267ADABC-C166-4189-98CA-C4E1AE1568CF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{267ADABC-C166-4189-98CA-C4E1AE1568CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "chase", "middleware\chase\chase.csproj", "{7E6AF266-46A6-4AEC-964E-6736B61E1E17}"
 EndProject

@@ -8,6 +8,6 @@ public class SqsDependencyBuilder : IDependencyContainerBuilder
 {
 	public void RegisterDependencies(ContainerBuilder builder)
 	{
-		builder.RegisterType<EmailQueue>().As<IBankItemSource>().SingleInstance();
+		builder.RegisterType<EmailQueue>().As<EmailQueue>().SingleInstance();
 	}
 }

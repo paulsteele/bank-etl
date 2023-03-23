@@ -9,10 +9,10 @@ public class DiscordDependencyBuilder : IDependencyContainerBuilder
 	public void RegisterDependencies(ContainerBuilder builder)
 	{
 		builder.RegisterType<DiscordClient>().As<DiscordClient>().SingleInstance();
-		builder.RegisterType<CategoryEmojiRequestTransformer>().As<ICategoryTransformer>().SingleInstance();
-		builder.RegisterType<CategoryEmojiResponseTransformer>().As<ICategoryTransformer>().SingleInstance();
-		builder.RegisterType<ItemRequestTransformer>().As<IBankItemTransformer>().SingleInstance();
-		builder.RegisterType<ItemResponseTransformer>().As<IBankItemTransformer>().SingleInstance();
-		builder.RegisterType<ItemRemainingTransformer>().As<IBankItemTransformer>().SingleInstance();
+		builder.RegisterType<CategoryEmojiRequestTransformer>().As<CategoryEmojiRequestTransformer>().SingleInstance();
+		builder.RegisterType<CategoryEmojiResponseTransformer>().As<CategoryEmojiResponseTransformer>().SingleInstance();
+		builder.RegisterType<ItemRequestTransformer>().As<ItemRequestTransformer>().SingleInstance();
+		builder.RegisterType<ItemResponseTransformer>().As<ItemResponseTransformer>().SingleInstance();
+		builder.RegisterType<ItemRemainingTransformer>().As<ItemRemainingTransformer>().SingleInstance();
 	}
 }

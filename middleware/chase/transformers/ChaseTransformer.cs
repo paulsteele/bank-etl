@@ -6,20 +6,22 @@ using Microsoft.Extensions.Logging;
 
 namespace chase;
 
-public class ChaseBankItemTransformer : IBankItemTransformer
+public class ChaseBankItemTransformer : ITransformer<BankItem>
 {
 	private readonly ILogger<ChaseBankItemTransformer> _logger;
+	private readonly ErrorHandler _errorHandler;
 
-	public ChaseBankItemTransformer(ILogger<ChaseBankItemTransformer> logger)
+	public ChaseBankItemTransformer(ILogger<ChaseBankItemTransformer> logger, ErrorHandler errorHandler)
 	{
 		_logger = logger;
+		_errorHandler = errorHandler;
 	}
 	public string SourceState => "ParsedFromSes";
 	private string DestinationState => "ParsedFromChase";
 	
 	public Task Transform(BankItem item, IDb _)
 	{
-		ErrorCatching.ExecuteWithErrorCatching(
+		_errorHandler.ExecuteWithErrorCatching(
 			_logger, () =>
 			{
 				var match = Regex.Match(item.RawEmail, "\\$((\\d*,?)*\\.+\\d*)\\s*(with)*(to)*\\s*(.*)</td>");

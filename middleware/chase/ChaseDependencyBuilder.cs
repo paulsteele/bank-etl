@@ -8,6 +8,6 @@ public class ChaseDependencyBuilder : IDependencyContainerBuilder
 {
 	public void RegisterDependencies(ContainerBuilder builder)
 	{
-		builder.RegisterType<ChaseBankItemTransformer>().As<IBankItemTransformer>().SingleInstance();
+		builder.RegisterType<ChaseBankItemTransformer>().As<ChaseBankItemTransformer>().SingleInstance();
 	}
 }

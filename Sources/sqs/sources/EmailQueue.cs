@@ -11,19 +11,22 @@ using Microsoft.Extensions.Logging;
 
 namespace sqs;
 
-internal class EmailQueue : IBankItemSource
+public class EmailQueue : ISource<BankItem>
 {
 	private readonly IEnvironmentVariableConfiguration _environmentVariableConfiguration;
 	private readonly ILogger<EmailQueue> _logger;
+	private readonly ErrorHandler _errorHandler;
 	private const string ReceivedFromSqs = nameof(ReceivedFromSqs);
 
 	public EmailQueue(
 		IEnvironmentVariableConfiguration environmentVariableConfiguration,
-		ILogger<EmailQueue> logger
+		ILogger<EmailQueue> logger,
+		ErrorHandler errorHandler
 	)
 	{
 		_environmentVariableConfiguration = environmentVariableConfiguration;
 		_logger = logger;
+		_errorHandler = errorHandler;
 	}
 
 	private AmazonSQSClient CreateClient()
@@ -37,7 +40,7 @@ internal class EmailQueue : IBankItemSource
 
 	public Task Poll(IDb database)
 	{
-		return ErrorCatching.ExecuteWithErrorCatching(
+		return _errorHandler.ExecuteWithErrorCatching(
 			_logger, async () =>
 			{
 				var client = CreateClient();
@@ -61,11 +64,13 @@ internal class EmailQueue : IBankItemSource
 					database.SaveChanges();
 					_logger.LogInformation($"Added {message.MessageId}");
 
+					/*
 					var deleteResponse = await client.DeleteMessageAsync(new DeleteMessageRequest(_environmentVariableConfiguration.SqsQueueUrl, message.ReceiptHandle));
 					if (AssertSuccess(deleteResponse))
 					{
 					 _logger.LogInformation($"Removed {message.MessageId} from the queue");
 					}
+					*/
 				}
 			}
 		);

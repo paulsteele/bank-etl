@@ -2,9 +2,9 @@ using Microsoft.Extensions.Logging;
 
 namespace core;
 
-public static class ErrorCatching
+public class ErrorHandler
 {
-	public static void ExecuteWithErrorCatching<T>(ILogger<T> logger, Action action)
+	public void ExecuteWithErrorCatching<T>(ILogger<T> logger, Action action)
 	{
 		try
 		{
@@ -16,7 +16,7 @@ public static class ErrorCatching
 		}
 	}
 	
-	public static async Task ExecuteWithErrorCatching<T>(ILogger<T> logger, Func<Task> action)
+	public async Task ExecuteWithErrorCatching<T>(ILogger<T> logger, Func<Task> action)
 	{
 		try
 		{
@@ -28,7 +28,7 @@ public static class ErrorCatching
 		}
 	}
 
-	private static void LogError<T>(Exception e, ILogger<T> logger)
+	private void LogError<T>(Exception e, ILogger<T> logger)
 	{
 		logger.LogError(e.Message);
 		logger.LogError(e.StackTrace);

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace firefly_iii;
 
-public class FireflyCategorySource : ICategorySource
+public class FireflyCategorySource : ISource<Category>
 {
 	private readonly FireflyClient _client;
 	private readonly ILogger<FireflyCategorySource> _logger;

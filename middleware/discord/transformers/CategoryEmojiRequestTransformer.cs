@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace discord;
 
-public class CategoryEmojiRequestTransformer : ICategoryTransformer
+public class CategoryEmojiRequestTransformer : ITransformer<Category>
 {
 	private readonly DiscordClient _client;
 	private readonly ILogger<CategoryEmojiRequestTransformer> _logger;

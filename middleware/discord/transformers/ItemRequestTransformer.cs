@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace discord;
 
-public class ItemRequestTransformer : IBankItemTransformer
+public class ItemRequestTransformer : ITransformer<BankItem>
 {
 	private readonly DiscordClient _client;
 	private readonly ILogger<ItemRequestTransformer> _logger;

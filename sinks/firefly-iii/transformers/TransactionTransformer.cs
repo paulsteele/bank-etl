@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace firefly_iii;
 
-public class TransactionTransformer : IBankItemTransformer
+public class TransactionTransformer : ITransformer<BankItem>
 {
 	private readonly FireflyClient _client;
 	private readonly ILogger<TransactionTransformer> _logger;

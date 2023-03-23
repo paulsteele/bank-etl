@@ -7,15 +7,17 @@ using Microsoft.Extensions.Logging;
 
 namespace ses;
 
-public class SesBankItemTransformer : IBankItemTransformer
+public class SesBankItemTransformer : ITransformer<BankItem>
 {
 	private readonly ILogger<SesBankItemTransformer> _logger;
+	private readonly ErrorHandler _errorHandler;
 	public string SourceState => "ReceivedFromSqs";
 	private string DestinationState => "ParsedFromSes";
 
-	public SesBankItemTransformer(ILogger<SesBankItemTransformer> logger)
+	public SesBankItemTransformer(ILogger<SesBankItemTransformer> logger, ErrorHandler errorHandler)
 	{
 		_logger = logger;
+		_errorHandler = errorHandler;
 	}
 	public Task Transform(BankItem item, IDb _)
 	{
@@ -24,7 +26,7 @@ public class SesBankItemTransformer : IBankItemTransformer
 			return Task.CompletedTask;
 		}
 
-		ErrorCatching.ExecuteWithErrorCatching(
+		_errorHandler.ExecuteWithErrorCatching(
 			_logger, () =>
 			{
 				var ses = JsonSerializer.Deserialize<SesJson>(item.RawPayload);
