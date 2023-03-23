@@ -38,7 +38,8 @@ var categoryFlow = new Flow<Category>(
 	(db, s) => db.GetCategoriesFromState(s)
 );
 
-DependencyContainer.Instance.Resolve<EventLoop>().Start(new IFlow[]{bankItemFlow, categoryFlow});
+var eventLoop = DependencyContainer.Instance.Resolve<EventLoop>().Start(new IFlow[]{bankItemFlow, categoryFlow});
 
 DependencyContainer.Instance.Resolve<ILogger<Program>>().LogInformation("Started ETL");
-new CancellationToken().WaitHandle.WaitOne();
+
+await eventLoop;

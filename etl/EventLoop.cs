@@ -1,4 +1,5 @@
 using Autofac;
+using core.Db;
 using core.models;
 using Microsoft.Extensions.Logging;
 
@@ -7,6 +8,7 @@ namespace core;
 public class EventLoop
 {
 	private readonly ILogger<EventLoop> _logger;
+	private bool _keepRunning = true;
 	private readonly ILifetimeScope _lifetimeScope;
 
 	public EventLoop(
@@ -18,8 +20,33 @@ public class EventLoop
 		_lifetimeScope = lifetimeScope;
 	}
 
-	public void Start(IEnumerable<IFlow> flows)
+	public void Stop()
 	{
-		
+		_keepRunning = false;
+	}
+
+	public Task Start(IEnumerable<IFlow> flows)
+	{
+		var taskCompletionSources = new List<TaskCompletionSource>();
+		foreach (var flow in flows)
+		{
+			var completionSource = new TaskCompletionSource();
+			taskCompletionSources.Add(completionSource);
+			Task.Run(async () =>
+			{
+				while (_keepRunning)
+				{
+				 await using var scope = _lifetimeScope.BeginLifetimeScope();
+				 var db = scope.Resolve<IDb>();
+				 await flow.Execute(db);
+				 await Task.Delay(new TimeSpan(0, 0, 0, 30));
+				 db.SaveChanges();
+				}
+
+				completionSource.TrySetResult();
+			});
+		}
+
+		return Task.WhenAll(taskCompletionSources.Select(tsc => tsc.Task));
 	}
 }
