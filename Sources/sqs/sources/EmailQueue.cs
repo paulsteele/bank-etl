@@ -64,13 +64,11 @@ public class EmailQueue : ISource<BankItem>
 					database.SaveChanges();
 					_logger.LogInformation($"Added {message.MessageId}");
 
-					/*
 					var deleteResponse = await client.DeleteMessageAsync(new DeleteMessageRequest(_environmentVariableConfiguration.SqsQueueUrl, message.ReceiptHandle));
 					if (AssertSuccess(deleteResponse))
 					{
-					 _logger.LogInformation($"Removed {message.MessageId} from the queue");
+						_logger.LogInformation($"Removed {message.MessageId} from the queue");
 					}
-					*/
 				}
 
 				return response.Messages.Count > 0 ? TimeSpan.FromSeconds(30) : TimeSpan.FromMinutes(1);
