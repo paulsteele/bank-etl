@@ -1,6 +1,8 @@
 using Autofac;
 using core.Dependencies;
 using core.models;
+using firefly_iii.sources;
+using firefly_iii.transformers;
 
 namespace firefly_iii;
 

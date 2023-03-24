@@ -2,13 +2,12 @@ using core.Db;
 using core.models;
 using Microsoft.Extensions.Logging;
 
-namespace firefly_iii;
+namespace firefly_iii.sources;
 
 public class FireflyCategorySource : ISource<Category>
 {
 	private readonly FireflyClient _client;
 	private readonly ILogger<FireflyCategorySource> _logger;
-	private const string ReceivedFromFirefly = nameof(ReceivedFromFirefly);
 
 	public FireflyCategorySource(
 		FireflyClient client, 
@@ -19,7 +18,7 @@ public class FireflyCategorySource : ISource<Category>
 		_logger = logger;
 	}
 
-	public async Task Poll(IDb database)
+	public async Task Poll(IDb database, string successState)
 	{
 		var budgets = await _client.GetBudgets();
 
@@ -54,7 +53,7 @@ public class FireflyCategorySource : ISource<Category>
 				Name = b.Attributes!.Name,
 				FireflyId = b.Id,
 				FireflyOrder = b.Attributes.Order,
-				State = ReceivedFromFirefly
+				State = successState
 			}
 		);
 		
@@ -63,5 +62,6 @@ public class FireflyCategorySource : ISource<Category>
 			database.AddCategory(category);
 			_logger.LogInformation($"Added Category {category.Name}");
 		}
+		database.SaveChanges();
 	}
 }

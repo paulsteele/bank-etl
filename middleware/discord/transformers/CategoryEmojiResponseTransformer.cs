@@ -1,62 +1,69 @@
-using System.Data;
+using core;
 using core.Db;
 using core.models;
 using Microsoft.Extensions.Logging;
 
-namespace discord;
+namespace discord.transformers;
 
 public class CategoryEmojiResponseTransformer : ITransformer<Category>
 {
 	private readonly DiscordClient _client;
 	private readonly ILogger<CategoryEmojiResponseTransformer> _logger;
+	private readonly ErrorHandler _errorHandler;
 
 	public CategoryEmojiResponseTransformer(
 		DiscordClient client, 
-		ILogger<CategoryEmojiResponseTransformer> logger
+		ILogger<CategoryEmojiResponseTransformer> logger,
+		ErrorHandler errorHandler
 	)
 	{
 		_client = client;
 		_logger = logger;
+		_errorHandler = errorHandler;
 	}
-	public string SourceState => "WaitingForEmoji";
-	public string Setup => nameof(Setup);
-	public async Task Transform(Category item, IDb db)
+	public Task<TransformResult<Category>> Transform(Category item, IDb db)
 	{
-		if (!item.DiscordMessageId.HasValue)
+		return _errorHandler.ExecuteWithErrorCatching(_logger, async () =>
 		{
-			_logger.LogError($"{item.Name} has no discord message");
-			return;
-		}
-		var reactions = (await _client.GetReactions(item.DiscordMessageId.Value)).ToArray();
 
-		if (reactions.Length == 1)
-		{
-			var existing = db.GetAllCategories().Where(c => c.Emoji == reactions[0].Name);
-
-			if (existing.Any())
+			if (!item.DiscordMessageId.HasValue)
 			{
-				var newId = await _client.SendMessage($"The emoji for {item.Name} was already selected. Try again");
-				if (newId == 0)
+				_logger.LogError($"{item.Name} has no discord message");
+				return item.DefaultFailureResult();
+			}
+
+			var reactions = (await _client.GetReactions(item.DiscordMessageId.Value)).ToArray();
+
+			if (reactions.Length == 1)
+			{
+				var existing = db.GetAllCategories().Where(c => c.Emoji == reactions[0].Name);
+
+				if (existing.Any())
 				{
-					_logger.LogError("Could not send reselection message");
-					return;
+					var newId = await _client.SendMessage($"The emoji for {item.Name} was already selected. Try again");
+					if (newId == 0)
+					{
+						_logger.LogError("Could not send reselection message");
+						return item.DefaultFailureResult();
+					}
+
+					item.DiscordMessageId = newId;
+
+					return item.DefaultFailureResult();
 				}
 
-				item.DiscordMessageId = newId;
-				
-				return;
-			}
-			
-			
-			item.Emoji = reactions[0].Name;
-			item.State = Setup;
 
-			if (item.DiscordMessageId.HasValue)
-			{
-				await _client.React(item.DiscordMessageId.Value, new[] {"✅"});
+				item.Emoji = reactions[0].Name;
+
+				if (item.DiscordMessageId.HasValue)
+				{
+					await _client.React(item.DiscordMessageId.Value, new[] { "✅" });
+				}
+
+				_logger.LogInformation($"Setup {item.Name} with emoji {item.Emoji}");
 			}
-			
-			_logger.LogInformation($"Setup {item.Name} with emoji {item.Emoji}");
-		}
+
+			return item.ToSuccessResult(TimeSpan.FromSeconds(30));
+		});
 	}
 }

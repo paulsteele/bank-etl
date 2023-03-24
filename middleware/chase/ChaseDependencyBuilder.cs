@@ -1,4 +1,5 @@
 using Autofac;
+using chase.transformers;
 using core.Dependencies;
 using core.models;
 

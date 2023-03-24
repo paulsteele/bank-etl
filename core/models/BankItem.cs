@@ -2,13 +2,13 @@
 
 namespace core.models;
 
-public class BankItem
+public class BankItem : IStateful
 {
 	// Processing Details
 	[Key]
 	[Required]
 	public Guid? Id { get; set; }
-	public string? State { get; set; }
+	public string State { get; set; }
 	// sqs Details
 	public string? RawPayload { get; set; }
 	public string? RawEmail { get; set; }

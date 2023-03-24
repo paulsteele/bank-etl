@@ -5,50 +5,46 @@ using core.Db;
 using core.models;
 using Microsoft.Extensions.Logging;
 
-namespace ses;
+namespace ses.transformers;
 
 public class SesBankItemTransformer : ITransformer<BankItem>
 {
 	private readonly ILogger<SesBankItemTransformer> _logger;
 	private readonly ErrorHandler _errorHandler;
-	public string SourceState => "ReceivedFromSqs";
-	private string DestinationState => "ParsedFromSes";
 
 	public SesBankItemTransformer(ILogger<SesBankItemTransformer> logger, ErrorHandler errorHandler)
 	{
 		_logger = logger;
 		_errorHandler = errorHandler;
 	}
-	public Task Transform(BankItem item, IDb _)
+	public Task<TransformResult<BankItem>> Transform(BankItem item, IDb _)
 	{
 		if (item.RawPayload == null)
 		{
-			return Task.CompletedTask;
+			return Task.FromResult(item.DefaultFailureResult());
 		}
 
-		_errorHandler.ExecuteWithErrorCatching(
+		return _errorHandler.ExecuteWithErrorCatching(
 			_logger, () =>
 			{
 				var ses = JsonSerializer.Deserialize<SesJson>(item.RawPayload);
 				if (ses?.Message == null)
 				{
 					_logger.LogError($"Unexpected {nameof(BankItem.RawPayload)} in {item.Id}");
-					return;
+					return Task.FromResult(item.DefaultFailureResult());
 				}
+
 				var message = JsonSerializer.Deserialize<SesMessageJson>(ses.Message);
 
 				if (message?.Content == null)
 				{
 					_logger.LogError($"Unexpected {nameof(BankItem.RawPayload)} in {item.Id}");
-					return;
+					return Task.FromResult(item.DefaultFailureResult());
 				}
-				
-				item.RawEmail = Encoding.UTF8.GetString(Convert.FromBase64String(message.Content));
-				item.State = DestinationState;
-				_logger.LogInformation($"Successfully parsed {item.Id}");
-			}
-		);
 
-		return Task.CompletedTask;
+				item.RawEmail = Encoding.UTF8.GetString(Convert.FromBase64String(message.Content));
+				_logger.LogInformation($"Successfully parsed {item.Id}");
+				return Task.FromResult(item.ToSuccessResult(TimeSpan.FromSeconds(30)));
+			});
 	}
 }

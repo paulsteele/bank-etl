@@ -36,11 +36,12 @@ public class EventLoop
 			{
 				while (_keepRunning)
 				{
-				 await using var scope = _lifetimeScope.BeginLifetimeScope();
-				 var db = scope.Resolve<IDb>();
-				 await flow.Execute(db);
-				 await Task.Delay(new TimeSpan(0, 0, 0, 30));
-				 db.SaveChanges();
+					await using var scope = _lifetimeScope.BeginLifetimeScope();
+					var db = scope.Resolve<IDb>();
+					var delayTime = await flow.Execute(db);
+					_logger.LogInformation($"Flow {flow.Name} completed. Waiting {delayTime}");
+					await Task.Delay(delayTime);
+					db.SaveChanges();
 				}
 
 				completionSource.TrySetResult();

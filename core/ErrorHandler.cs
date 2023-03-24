@@ -4,27 +4,29 @@ namespace core;
 
 public class ErrorHandler
 {
-	public void ExecuteWithErrorCatching<T>(ILogger<T> logger, Action action)
+	public T ExecuteWithErrorCatching<T, TY>(ILogger<TY> logger, Func<T> action)
 	{
 		try
 		{
-			action.Invoke();
+			return action.Invoke();
 		}
 		catch (Exception e)
 		{
 			LogError(e, logger);
+			return default!;
 		}
 	}
 	
-	public async Task ExecuteWithErrorCatching<T>(ILogger<T> logger, Func<Task> action)
+	public Task<T> ExecuteWithErrorCatching<T, TL>(ILogger<TL> logger, Func<Task<T>> action)
 	{
 		try
 		{
-			await action.Invoke();
+			return action.Invoke();
 		}
 		catch (Exception e)
 		{
 			LogError(e, logger);
+			return Task.FromException<T>(e);
 		}
 	}
 

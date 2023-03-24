@@ -1,13 +1,16 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Autofac;
-using chase;
+using chase.transformers;
 using core;
 using core.Db;
 using core.models;
 using discord;
+using discord.transformers;
 using firefly_iii;
+using firefly_iii.sources;
+using firefly_iii.transformers;
 using Microsoft.Extensions.Logging;
-using ses;
+using ses.transformers;
 using sqs;
 
 EtlDependencyContainerBuilder.RegisterContainer();
@@ -15,25 +18,27 @@ EtlDependencyContainerBuilder.RegisterContainer();
 DependencyContainer.Instance.Resolve<IDb>().Init();
 
 var bankItemFlow = new Flow<BankItem>(
-	DependencyContainer.Instance.Resolve<EmailQueue>(),
-	new List<ITransformer<BankItem>>
+	"BankItem",
+	new SourceStep<BankItem>(DependencyContainer.Instance.Resolve<EmailQueue>(), "ReceivedFromSqs"),
+	new List<FlowStep<BankItem>>
 	{
-		DependencyContainer.Instance.Resolve<SesBankItemTransformer>(),
-		DependencyContainer.Instance.Resolve<ChaseBankItemTransformer>(),
-		DependencyContainer.Instance.Resolve<ItemRequestTransformer>(),
-		DependencyContainer.Instance.Resolve<ItemResponseTransformer>(),
-		DependencyContainer.Instance.Resolve<TransactionTransformer>(),
-		DependencyContainer.Instance.Resolve<ItemRemainingTransformer>()
+		new(DependencyContainer.Instance.Resolve<SesBankItemTransformer>(), "ParsedFromSes"),
+		new(DependencyContainer.Instance.Resolve<ChaseBankItemTransformer>(), "ParsedFromChase"),
+		new(DependencyContainer.Instance.Resolve<ItemRequestTransformer>(), "WaitingForEmoji"),
+		new(DependencyContainer.Instance.Resolve<ItemResponseTransformer>(), "ReceivedEmoji"),
+		new(DependencyContainer.Instance.Resolve<TransactionTransformer>(), "SentToFirefly"),
+		new(DependencyContainer.Instance.Resolve<ItemRemainingTransformer>(), "SentToFirefly")
 	},
 	(db, s) => db.GetItemsFromState(s)
 );
 
 var categoryFlow = new Flow<Category>(
-	DependencyContainer.Instance.Resolve<FireflyCategorySource>(),
-	new List<ITransformer<Category>>
+	"Category",
+	new SourceStep<Category>(DependencyContainer.Instance.Resolve<FireflyCategorySource>(), "ReceivedFromFirefly"),
+	new List<FlowStep<Category>>
 	{
-		DependencyContainer.Instance.Resolve<CategoryEmojiRequestTransformer>(),
-		DependencyContainer.Instance.Resolve<CategoryEmojiResponseTransformer>()
+		new(DependencyContainer.Instance.Resolve<CategoryEmojiRequestTransformer>(), "WaitingForEmoji"),
+		new(DependencyContainer.Instance.Resolve<CategoryEmojiResponseTransformer>(), "Setup")
 	},
 	(db, s) => db.GetCategoriesFromState(s)
 );

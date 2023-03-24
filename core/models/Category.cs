@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace core.models;
 
-public class Category
+public class Category : IStateful
 {
 	[Key]
 	[Required]

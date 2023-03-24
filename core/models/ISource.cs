@@ -4,5 +4,5 @@ namespace core.models;
 
 public interface ISource<T> 
 {
-	Task Poll(IDb database);
+	Task Poll(IDb database, string successState);
 }

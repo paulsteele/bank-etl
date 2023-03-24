@@ -16,7 +16,6 @@ public class EmailQueue : ISource<BankItem>
 	private readonly IEnvironmentVariableConfiguration _environmentVariableConfiguration;
 	private readonly ILogger<EmailQueue> _logger;
 	private readonly ErrorHandler _errorHandler;
-	private const string ReceivedFromSqs = nameof(ReceivedFromSqs);
 
 	public EmailQueue(
 		IEnvironmentVariableConfiguration environmentVariableConfiguration,
@@ -38,7 +37,7 @@ public class EmailQueue : ISource<BankItem>
 		);
 	}
 
-	public Task Poll(IDb database)
+	public Task Poll(IDb database, string successState)
 	{
 		return _errorHandler.ExecuteWithErrorCatching(
 			_logger, async () =>
@@ -57,7 +56,7 @@ public class EmailQueue : ISource<BankItem>
 					var item = new BankItem
 					{
 						RawPayload = message.Body,
-						State = ReceivedFromSqs
+						State = successState
 					};
 
 					database.AddItem(item);
