@@ -45,6 +45,8 @@ public class SesBankItemTransformer : ITransformer<BankItem>
 				item.RawEmail = Encoding.UTF8.GetString(Convert.FromBase64String(message.Content));
 				_logger.LogInformation($"Successfully parsed {item.Id}");
 				return Task.FromResult(item.ToSuccessResult(TimeSpan.FromSeconds(30)));
-			});
+			},
+			item.DefaultFailureResult()
+			);
 	}
 }

@@ -1,17 +1,14 @@
-﻿// See https://aka.ms/new-console-template for more information
-using Autofac;
+﻿using Autofac;
 using chase.transformers;
 using core;
 using core.Db;
 using core.models;
-using discord;
 using discord.transformers;
-using firefly_iii;
 using firefly_iii.sources;
 using firefly_iii.transformers;
 using Microsoft.Extensions.Logging;
 using ses.transformers;
-using sqs;
+using sqs.sources;
 
 EtlDependencyContainerBuilder.RegisterContainer();
 

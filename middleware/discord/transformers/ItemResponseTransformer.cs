@@ -53,6 +53,8 @@ public class ItemResponseTransformer : ITransformer<BankItem>
 			_logger.LogInformation($"{item.Id} set to {category.Name}");
 
 			return item.ToSuccessResult(TimeSpan.FromSeconds(30));
-		});
+		},
+			item.DefaultFailureResult()
+		);
 	}
 }

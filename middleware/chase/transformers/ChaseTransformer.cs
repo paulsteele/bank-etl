@@ -40,7 +40,8 @@ public partial class ChaseBankItemTransformer : ITransformer<BankItem>
 				item.Timestamp = DateTimeOffset.Now;
 				_logger.LogInformation($"Successfully parsed {item.Id} - {item.Amount} - {item.Vendor}");
 				return Task.FromResult(item.ToSuccessResult(TimeSpan.FromSeconds(30)));
-			}
+			},
+			item.DefaultFailureResult()
 		);
 	}
 }

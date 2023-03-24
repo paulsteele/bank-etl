@@ -9,7 +9,7 @@ using core.Db;
 using core.models;
 using Microsoft.Extensions.Logging;
 
-namespace sqs;
+namespace sqs.sources;
 
 public class EmailQueue : ISource<BankItem>
 {
@@ -37,7 +37,7 @@ public class EmailQueue : ISource<BankItem>
 		);
 	}
 
-	public Task Poll(IDb database, string successState)
+	public Task<TimeSpan> Poll(IDb database, string successState)
 	{
 		return _errorHandler.ExecuteWithErrorCatching(
 			_logger, async () =>
@@ -46,10 +46,11 @@ public class EmailQueue : ISource<BankItem>
 				var response = await client.ReceiveMessageAsync(new ReceiveMessageRequest(_environmentVariableConfiguration.SqsQueueUrl) {WaitTimeSeconds = 0, MaxNumberOfMessages = 5});
 				if (!AssertSuccess(response))
 				{
-					return;
+					return TimeSpan.FromSeconds(30);
 				}
 
 				_logger.LogInformation($"Found {response.Messages.Count} messages");
+
 				// ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
 				foreach (var message in response.Messages)
 				{
@@ -71,7 +72,10 @@ public class EmailQueue : ISource<BankItem>
 					}
 					*/
 				}
-			}
+
+				return response.Messages.Count > 0 ? TimeSpan.FromSeconds(30) : TimeSpan.FromMinutes(1);
+			},
+			TimeSpan.FromSeconds(30)
 		);
 	}
 

@@ -55,7 +55,8 @@ public class TransactionTransformer : ITransformer<BankItem>
 			item.AmountInCategoryAfter = budgeted + budget.Attributes.Spent.FirstOrDefault()!.Sum;
 
 			return item.ToSuccessResult(TimeSpan.FromSeconds(30));
-		});
-
+		},
+			item.DefaultFailureResult()
+		);
 	}
 }

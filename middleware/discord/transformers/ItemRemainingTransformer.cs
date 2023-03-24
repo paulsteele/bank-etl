@@ -43,6 +43,8 @@ public class ItemRemainingTransformer : ITransformer<BankItem>
 
 			await _client.React(item.DiscordMessageId.Value, new[] { "✅" });
 			return item.ToSuccessResult(TimeSpan.FromSeconds(30));
-		});
+		},
+			item.DefaultFailureResult()
+		);
 	}
 }

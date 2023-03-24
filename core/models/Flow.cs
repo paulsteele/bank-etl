@@ -30,9 +30,7 @@ public class Flow<T> : IFlow where T : class, IStateful
 
 	public async Task<TimeSpan> Execute(IDb database)
 	{
-		await SourceStep.Source.Poll(database, SourceStep.CompleteState);
-
-		var nextRequestedPollTime = TimeSpan.FromDays(1);
+		var nextRequestedPollTime = await SourceStep.Source.Poll(database, SourceStep.CompleteState);
 
 		for (var node = FlowSteps.First; node != null; node = node.Next)
 		{

@@ -53,6 +53,8 @@ public class ItemRequestTransformer : ITransformer<BankItem>
 			item.DiscordMessageId = message;
 
 			return item.ToSuccessResult(TimeSpan.FromSeconds(30));
-		});
+		},
+			item.DefaultFailureResult()
+		);
 	}
 }

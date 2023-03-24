@@ -64,6 +64,8 @@ public class CategoryEmojiResponseTransformer : ITransformer<Category>
 			}
 
 			return item.ToSuccessResult(TimeSpan.FromSeconds(30));
-		});
+		},
+			item.DefaultFailureResult()
+		);
 	}
 }

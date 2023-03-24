@@ -38,9 +38,7 @@ public class FireflyClient
 		var responseContent = await response.Content.ReadAsStringAsync();		
 		if (!response.IsSuccessStatusCode)
 		{
-			_logger.LogError($"{response.StatusCode} - {response.ReasonPhrase}");
-			_logger.LogError(responseContent);
-			return Array.Empty<Budget>();
+			throw new HttpRequestException($"{response.StatusCode} - {response.ReasonPhrase} - {responseContent}");
 		}
 
 		var budgetResponse = JsonSerializer.Deserialize<ListBudgetsResponse>(responseContent);
