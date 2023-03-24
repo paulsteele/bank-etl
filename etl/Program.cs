@@ -24,9 +24,10 @@ var bankItemFlow = new Flow<BankItem>(
 		new(DependencyContainer.Instance.Resolve<ItemRequestTransformer>(), "WaitingForEmoji"),
 		new(DependencyContainer.Instance.Resolve<ItemResponseTransformer>(), "ReceivedEmoji"),
 		new(DependencyContainer.Instance.Resolve<TransactionTransformer>(), "SentToFirefly"),
-		new(DependencyContainer.Instance.Resolve<ItemRemainingTransformer>(), "SentToFirefly")
+		new(DependencyContainer.Instance.Resolve<ItemRemainingTransformer>(), "Done")
 	},
-	(db, s) => db.GetItemsFromState(s)
+	(db, s) => db.GetItemsFromState(s),
+	DependencyContainer.Instance.Resolve<ILogger<Flow<BankItem>>>()
 );
 
 var categoryFlow = new Flow<Category>(
@@ -37,7 +38,8 @@ var categoryFlow = new Flow<Category>(
 		new(DependencyContainer.Instance.Resolve<CategoryEmojiRequestTransformer>(), "WaitingForEmoji"),
 		new(DependencyContainer.Instance.Resolve<CategoryEmojiResponseTransformer>(), "Setup")
 	},
-	(db, s) => db.GetCategoriesFromState(s)
+	(db, s) => db.GetCategoriesFromState(s),
+	DependencyContainer.Instance.Resolve<ILogger<Flow<Category>>>()
 );
 
 var eventLoop = DependencyContainer.Instance.Resolve<EventLoop>().Start(new IFlow[]{bankItemFlow, categoryFlow});

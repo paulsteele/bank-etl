@@ -1,4 +1,5 @@
 using core.Db;
+using Microsoft.Extensions.Logging;
 
 namespace core.models;
 
@@ -10,6 +11,7 @@ public interface IFlow
 
 public class Flow<T> : IFlow where T : class, IStateful
 {
+	private readonly ILogger<Flow<T>> _logger;
 	public string Name { get; }
 	private SourceStep<T> SourceStep { get; }
 	private LinkedList<FlowStep<T>> FlowSteps { get; }
@@ -19,13 +21,15 @@ public class Flow<T> : IFlow where T : class, IStateful
 		string name,
 		SourceStep<T> sourceStep,
 		IEnumerable<FlowStep<T>> flowSteps,
-		Func<IDb, string, T[]> getItemsFromStateFunction
+		Func<IDb, string, T[]> getItemsFromStateFunction,
+		ILogger<Flow<T>> logger
 	)
 	{
 		Name = name;
 		SourceStep = sourceStep;
 		FlowSteps = new LinkedList<FlowStep<T>>(flowSteps);
 		GetItemsFromStateFunction = getItemsFromStateFunction;
+		_logger = logger;
 	}
 
 	public async Task<TimeSpan> Execute(IDb database)
@@ -35,7 +39,8 @@ public class Flow<T> : IFlow where T : class, IStateful
 		for (var node = FlowSteps.First; node != null; node = node.Next)
 		{
 			var state = node.Previous?.Value.CompleteState ?? SourceStep.CompleteState;
-			
+
+			var shouldSave = false;
 			foreach (var item in GetItemsFromStateFunction(database, state))
 			{
 				var res = await node.Value.Transformer.Transform(item, database);
@@ -46,8 +51,15 @@ public class Flow<T> : IFlow where T : class, IStateful
 
 				if (res.Is(TransformStatus.Success))
 				{
+					shouldSave = true;
 					res.Result.State = node.Value.CompleteState;
 				}
+			}
+
+			if (shouldSave)
+			{
+				_logger.LogInformation($"Flow {Name} has changes. Saving");
+				database.SaveChanges();
 			}
 		}
 

@@ -41,7 +41,6 @@ public class EventLoop
 					var delayTime = await flow.Execute(db);
 					_logger.LogInformation($"Flow {flow.Name} completed. Waiting {delayTime}");
 					await Task.Delay(delayTime);
-					db.SaveChanges();
 				}
 
 				completionSource.TrySetResult();
