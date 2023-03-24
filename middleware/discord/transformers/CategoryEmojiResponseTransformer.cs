@@ -61,9 +61,11 @@ public class CategoryEmojiResponseTransformer : ITransformer<Category>
 				}
 
 				_logger.LogInformation($"Setup {item.Name} with emoji {item.Emoji}");
+				
+				return item.ToSuccessResult(TimeSpan.FromSeconds(30));
 			}
 
-			return item.ToSuccessResult(TimeSpan.FromSeconds(30));
+			return item.DefaultFailureResult();
 		},
 			item.DefaultFailureResult()
 		);
