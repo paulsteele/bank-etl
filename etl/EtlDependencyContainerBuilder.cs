@@ -7,6 +7,7 @@ using core.Dependencies;
 using discord;
 using firefly_iii;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using ses;
 using sqs;
 
@@ -39,7 +40,12 @@ public class EtlDependencyContainerBuilder : IDependencyContainerBuilder
 		builder.RegisterInstance(LoggerFactory.Create(
 				logBuilder =>
 				{
-					logBuilder.AddConsole();
+					logBuilder.AddSimpleConsole(options =>
+					{
+						options.TimestampFormat = "yyyy/MM/dd HH:mm:ss ";
+						options.SingleLine = true;
+						options.IncludeScopes = true;
+					});
 				}))
 			.As<ILoggerFactory>();
 

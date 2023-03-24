@@ -19,7 +19,10 @@ public class DiscordClient
 		_environmentVariableConfiguration = environmentVariableConfiguration;
 		_logger = logger;
 
-		_client = new DiscordSocketClient();
+		_client = new DiscordSocketClient(new DiscordSocketConfig()
+		{
+			GatewayIntents = GatewayIntents.GuildEmojis | GatewayIntents.Guilds | GatewayIntents.GuildMessages
+		});
 		_client.Log += Log;
 
 		_client.LoginAsync(TokenType.Bot, _environmentVariableConfiguration.DiscordBotKey).Wait();
