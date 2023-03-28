@@ -25,6 +25,9 @@
       <None Update="Services\Chase\TestTransactionEmail.html">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Services\Chase\TestDepositEmail.html">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
