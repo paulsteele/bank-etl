@@ -2,7 +2,13 @@ using Microsoft.Extensions.Logging;
 
 namespace core;
 
-public class ErrorHandler
+public interface IErrorHandler
+{
+	Task ExecuteWithErrorCatching<TY>(ILogger<TY> logger, Func<Task> action);
+	Task<T> ExecuteWithErrorCatching<T, TL>(ILogger<TL> logger, Func<Task<T>> action, T errorItem);
+}
+
+public class ErrorHandler : IErrorHandler
 {
 	public async Task ExecuteWithErrorCatching<TY>(ILogger<TY> logger, Func<Task> action)
 	{

@@ -10,9 +10,9 @@ namespace ses.transformers;
 public class SesBankItemTransformer : ITransformer<BankItem>
 {
 	private readonly ILogger<SesBankItemTransformer> _logger;
-	private readonly ErrorHandler _errorHandler;
+	private readonly IErrorHandler _errorHandler;
 
-	public SesBankItemTransformer(ILogger<SesBankItemTransformer> logger, ErrorHandler errorHandler)
+	public SesBankItemTransformer(ILogger<SesBankItemTransformer> logger, IErrorHandler errorHandler)
 	{
 		_logger = logger;
 		_errorHandler = errorHandler;

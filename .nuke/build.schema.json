@@ -85,7 +85,8 @@
               "Restore",
               "Run",
               "StartDevContainers",
-              "StopDevContainers"
+              "StopDevContainers",
+              "Test"
             ]
           }
         },
@@ -108,7 +109,8 @@
               "Restore",
               "Run",
               "StartDevContainers",
-              "StopDevContainers"
+              "StopDevContainers",
+              "Test"
             ]
           }
         },

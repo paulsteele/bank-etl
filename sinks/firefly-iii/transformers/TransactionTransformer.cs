@@ -9,12 +9,12 @@ public class TransactionTransformer : ITransformer<BankItem>
 {
 	private readonly FireflyClient _client;
 	private readonly ILogger<TransactionTransformer> _logger;
-	private readonly ErrorHandler _errorHandler;
+	private readonly IErrorHandler _errorHandler;
 
 	public TransactionTransformer(
 		FireflyClient client,
 		ILogger<TransactionTransformer> logger,
-		ErrorHandler errorHandler
+		IErrorHandler errorHandler
 	)
 	{
 		_client = client;

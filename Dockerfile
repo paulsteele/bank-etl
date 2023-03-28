@@ -1,6 +1,11 @@
 ﻿FROM mcr.microsoft.com/dotnet/runtime:7.0 AS base
 WORKDIR /app
 
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS test
+WORKDIR /src
+COPY . .
+RUN ./build.sh test
+
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY . .

@@ -15,12 +15,12 @@ public class EmailQueue : ISource<BankItem>
 {
 	private readonly IEnvironmentVariableConfiguration _environmentVariableConfiguration;
 	private readonly ILogger<EmailQueue> _logger;
-	private readonly ErrorHandler _errorHandler;
+	private readonly IErrorHandler _errorHandler;
 
 	public EmailQueue(
 		IEnvironmentVariableConfiguration environmentVariableConfiguration,
 		ILogger<EmailQueue> logger,
-		ErrorHandler errorHandler
+		IErrorHandler errorHandler
 	)
 	{
 		_environmentVariableConfiguration = environmentVariableConfiguration;

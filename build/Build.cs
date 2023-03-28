@@ -62,6 +62,18 @@ class Build : NukeBuild
 				);
 			}
 		);
+	
+	Target Test => _ => _
+		.Executes(() =>
+			{
+				RootProjectName = "tests";
+				DotNetTest(s => s
+					.SetProjectFile(Solution.GetProject(RootProjectName))
+					.SetConfiguration(Configuration)
+					.EnableNoRestore()
+				);
+			}
+		);
 
 	Target ListMigrations => _ => _
 		.Executes(() =>

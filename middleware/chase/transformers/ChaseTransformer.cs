@@ -9,9 +9,9 @@ namespace chase.transformers;
 public partial class ChaseBankItemTransformer : ITransformer<BankItem>
 {
 	private readonly ILogger<ChaseBankItemTransformer> _logger;
-	private readonly ErrorHandler _errorHandler;
+	private readonly IErrorHandler _errorHandler;
 
-	public ChaseBankItemTransformer(ILogger<ChaseBankItemTransformer> logger, ErrorHandler errorHandler)
+	public ChaseBankItemTransformer(ILogger<ChaseBankItemTransformer> logger, IErrorHandler errorHandler)
 	{
 		_logger = logger;
 		_errorHandler = errorHandler;

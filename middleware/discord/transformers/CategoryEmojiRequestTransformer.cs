@@ -9,12 +9,12 @@ public class CategoryEmojiRequestTransformer : ITransformer<Category>
 {
 	private readonly DiscordClient _client;
 	private readonly ILogger<CategoryEmojiRequestTransformer> _logger;
-	private readonly ErrorHandler _errorHandler;
+	private readonly IErrorHandler _errorHandler;
 
 	public CategoryEmojiRequestTransformer(
 		DiscordClient client, 
 		ILogger<CategoryEmojiRequestTransformer> logger,
-		ErrorHandler errorHandler
+		IErrorHandler errorHandler
 	)
 	{
 		_client = client;

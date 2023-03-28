@@ -9,12 +9,12 @@ public class ItemRequestTransformer : ITransformer<BankItem>
 {
 	private readonly DiscordClient _client;
 	private readonly ILogger<ItemRequestTransformer> _logger;
-	private readonly ErrorHandler _errorHandler;
+	private readonly IErrorHandler _errorHandler;
 
 	public ItemRequestTransformer(
 		DiscordClient client,
 		ILogger<ItemRequestTransformer> logger,
-		ErrorHandler errorHandler
+		IErrorHandler errorHandler
 	)
 	{
 		_client = client;

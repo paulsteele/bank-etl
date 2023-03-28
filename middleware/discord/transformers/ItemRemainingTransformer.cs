@@ -9,12 +9,12 @@ public class ItemRemainingTransformer : ITransformer<BankItem>
 {
 	private readonly DiscordClient _client;
 	private readonly ILogger<ItemRemainingTransformer> _logger;
-	private readonly ErrorHandler _errorHandler;
+	private readonly IErrorHandler _errorHandler;
 
 	public ItemRemainingTransformer(
 		DiscordClient client,
 		ILogger<ItemRemainingTransformer> logger,
-		ErrorHandler errorHandler
+		IErrorHandler errorHandler
 	)
 	{
 		_client = client;

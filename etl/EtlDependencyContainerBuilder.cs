@@ -35,7 +35,7 @@ public class EtlDependencyContainerBuilder : IDependencyContainerBuilder
 		builder.RegisterType<Database.Db>().As<IDb>().InstancePerLifetimeScope();
 		builder.RegisterType<EnvironmentVariableConfiguration>().As<IEnvironmentVariableConfiguration>();
 		builder.RegisterType<EventLoop>().As<EventLoop>().SingleInstance();
-		builder.RegisterType<ErrorHandler>().As<ErrorHandler>().SingleInstance();
+		builder.RegisterType<ErrorHandler>().As<IErrorHandler>().SingleInstance();
 		
 		builder.RegisterInstance(LoggerFactory.Create(
 				logBuilder =>
