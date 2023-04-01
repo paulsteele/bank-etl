@@ -2,6 +2,7 @@
 using core;
 using core.Db;
 using core.models;
+using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 
 namespace chase.transformers;
@@ -17,27 +18,27 @@ public partial class ChaseBankItemTransformer : ITransformer<BankItem>
 		_errorHandler = errorHandler;
 	}
 	
-	[GeneratedRegex("\\$((\\d*,?)*\\.+\\d*)\\s*(with)*(to)*\\s*(.*)</td>")]
-	private static partial Regex ChaseEmailRegex();
-	
 	public Task<TransformResult<BankItem>> Transform(BankItem item, IDb _)
 	{
 		return _errorHandler.ExecuteWithErrorCatching(
 			_logger, () =>
 			{
-				var match = ChaseEmailRegex().Match(item.RawEmail);
-				var amount = match.Groups[1].Value;
-				var location = match.Groups[5].Value;
+				var snippet = new HtmlDocument();
+				
+				snippet.LoadHtml(item.RawEmail);
 
-				if (string.IsNullOrWhiteSpace(amount) || string.IsNullOrWhiteSpace(location))
-				{
-					_logger.LogError($"Could not parse Chase Email {item.Id}");
-					return Task.FromResult(item.DefaultFailureResult());
-				}
+				var eligibleRows = snippet.DocumentNode.Descendants()
+					.Where(node =>
+						node.Name == "tr" &&
+						node.ChildNodes.Count == 5) // Text nodes surround / separate the 2 actual children we care about
+					.Select(row => row.ChildNodes.Where(a => a.Name == "td"));
+				
 
+				/*
 				item.Amount = decimal.Parse(amount);
 				item.Vendor = location;
 				item.Timestamp = DateTimeOffset.Now;
+				*/
 				_logger.LogInformation($"Successfully parsed {item.Id} - {item.Amount} - {item.Vendor}");
 				return Task.FromResult(item.ToSuccessResult(TimeSpan.FromSeconds(30)));
 			},
